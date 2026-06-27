@@ -9,7 +9,7 @@
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
   min-height: 100vh;
   display: flex;
   align-items: center;
@@ -20,9 +20,9 @@ body {
 .container {
   background: #fff;
   border-radius: 16px;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
-  padding: 40px;
-  max-width: 560px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  padding: 36px;
+  max-width: 600px;
   width: 100%;
   animation: fadeIn 0.3s ease;
 }
@@ -30,24 +30,25 @@ body {
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
 h1 {
-  font-size: 24px;
+  font-size: 22px;
   color: #1a1a2e;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
 }
 
 .subtitle {
-  color: #666;
-  font-size: 14px;
-  margin-bottom: 24px;
+  color: #888;
+  font-size: 13px;
+  margin-bottom: 20px;
 }
 
 .breadcrumb {
   display: flex;
   flex-wrap: wrap;
-  gap: 4px;
-  margin-bottom: 20px;
-  font-size: 13px;
+  gap: 2px;
+  margin-bottom: 16px;
+  font-size: 12px;
   color: #999;
+  line-height: 1.6;
 }
 
 .breadcrumb span { cursor: pointer; color: #667eea; }
@@ -56,110 +57,106 @@ h1 {
 .breadcrumb .sep:hover { text-decoration: none; }
 
 .question-label {
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 600;
   color: #1a1a2e;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
   line-height: 1.4;
 }
 
 .options {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-bottom: 24px;
+  gap: 8px;
+  margin-bottom: 20px;
 }
 
 .option-btn {
-  padding: 14px 18px;
-  border: 2px solid #e0e0e0;
+  padding: 13px 16px;
+  border: 2px solid #e8e8e8;
   border-radius: 10px;
-  background: #fff;
+  background: #fafafa;
   cursor: pointer;
-  font-size: 15px;
+  font-size: 14px;
   text-align: left;
   transition: all 0.15s ease;
   color: #333;
 }
 
-.option-btn:hover {
-  border-color: #667eea;
-  background: #f8f9ff;
-}
-
-.option-btn.sub-option {
-  margin-left: 16px;
-  border-left: 3px solid #667eea;
-}
-
-.input-group {
-  margin-bottom: 24px;
-}
-
-.text-input {
-  width: 100%;
-  padding: 14px 18px;
-  border: 2px solid #e0e0e0;
-  border-radius: 10px;
-  font-size: 15px;
-  transition: border-color 0.15s ease;
-  font-family: inherit;
-}
-
-.text-input:focus { outline: none; border-color: #667eea; }
+.option-btn:hover { border-color: #667eea; background: #f0f2ff; }
 
 .btn {
-  padding: 12px 24px;
+  padding: 12px 20px;
   border: none;
   border-radius: 10px;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.15s ease;
   font-family: inherit;
 }
 
-.btn-primary {
+.btn-back {
+  background: #f0f0f0;
+  color: #555;
+  margin-top: 8px;
+}
+
+.btn-back:hover { background: #e0e0e0; }
+
+.result-card { padding: 8px 0; }
+.result-card p {
+  color: #333;
+  line-height: 1.7;
+  margin-bottom: 16px;
+  font-size: 15px;
+}
+
+.result-card .answer-text {
+  background: #f8f9ff;
+  border-left: 3px solid #667eea;
+  padding: 14px 16px;
+  border-radius: 6px;
+  margin-bottom: 16px;
+}
+
+.result-card a {
+  color: #667eea;
+  word-break: break-all;
+}
+
+.btn-restart {
   background: linear-gradient(135deg, #667eea, #764ba2);
   color: #fff;
   width: 100%;
 }
 
-.btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
-.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-
-.btn-restart {
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  color: #fff;
-  margin-top: 16px;
-}
-
-.result-card {
-  text-align: center;
-  padding: 20px 0;
-}
-
-.result-card h2 {
-  font-size: 22px;
-  color: #1a1a2e;
-  margin-bottom: 12px;
-}
-
-.result-card p {
-  color: #555;
-  line-height: 1.6;
-  margin-bottom: 20px;
-}
-
-.btn-back {
-  background: #f0f0f0;
-  color: #555;
-  margin-top: 10px;
-}
-
-.btn-back:hover { background: #e0e0e0; }
+.btn-restart:hover { opacity: 0.9; transform: translateY(-1px); }
 
 .hidden { display: none !important; }
+
+.related {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #eee;
+}
+
+.related-label {
+  font-size: 12px;
+  color: #999;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.related-link {
+  display: inline-block;
+  font-size: 13px;
+  color: #667eea;
+  cursor: pointer;
+  margin-right: 12px;
+  text-decoration: underline;
+}
 </style>
 </head>
 <body>
@@ -174,174 +171,130 @@ h1 {
 <script>
 const faq = {
   start: {
-    id: 'start',
-    label: 'What can I help you with?',
+    id: 'start', label: 'What issue are you having?',
     options: [
-      { text: 'General info', next: 'general' },
-      { text: 'Account help', next: 'account' },
-      { text: 'Billing question', next: 'billing' },
-      { text: 'Technical support', next: 'tech' },
+      { text: 'Game won\'t launch / error on startup', next: 'launch' },
+      { text: '"No internet connection" / "No licenses"', next: 'noinet' },
+      { text: 'Game not appearing in Steam library', next: 'nolibrary' },
+      { text: 'Download stuck / queued / not starting', next: 'download' },
+      { text: 'How do I get an API key?', next: 'apikey' },
+      { text: 'Antivirus flagged something as a virus', next: 'av' },
+      { text: 'DLC not working / content locked', next: 'dlc' },
+      { text: 'Multiplayer / online not working', next: 'multiplayer' },
+      { text: 'Save files / achievements lost', next: 'saves' },
+      { text: 'Linux-specific help', next: 'linux' },
     ],
   },
 
-  general: {
-    id: 'general',
-    label: 'What would you like to know?',
+  launch: {
+    id: 'launch', label: 'What error do you see?',
     options: [
-      { text: 'What is this service?', next: 'about' },
-      { text: 'How do I get started?', next: 'getstarted' },
-      { text: 'Is there a free tier?', next: 'pricing' },
+      { text: '"Application load error" with a number', next: 'apploaderr' },
+      { text: 'Game crashes instantly / nothing happens', next: 'crash' },
+      { text: '"No licenses" error', next: 'noinet' },
+      { text: 'Asks me to buy the game', next: 'askbuy' },
     ],
   },
 
-  about: {
-    id: 'about',
-    label: 'Are you a new user or existing customer?',
+  apploaderr: {
+    id: 'apploaderr', label: 'Do you know if the game has DRM?',
     options: [
-      { text: 'New user', end: true, answer: "Stool is a simple tool that helps you find answers fast. It's designed to be lightweight, free, and easy to use. To get started, just keep exploring the FAQ or head over to the getting started section!" },
-      { text: 'Existing customer', end: true, answer: "You already know the basics! Check the account or technical support sections for advanced help. If you need something specific, restart and pick a different path." },
+      { text: 'Not sure / what\'s DRM?', end: true, answer: '<strong>Application Load Error means the game has DRM protection.</strong><br><br>1. First, try running <strong>Steamless</strong> (comes with ACCELA or standalone) on the game\'s .exe — this removes SteamStub DRM.<br>2. If that doesn\'t work, the game likely has <strong>Denuvo/Themida/other DRM</strong>. Check <strong>#game-fixes</strong> in Discord for that specific game.<br>3. Some games need a crack from <strong>online-fix.me</strong> (also handles multiplayer).<br>4. If all else fails, the game may be unplayable without buying it.' },
+      { text: 'Yes, I applied Steamless already', end: true, answer: 'If Steamless didn\'t fix it, the game has non-SteamStub DRM (Denuvo, Themida, etc.).<br><br>1. Check <strong>#game-fixes</strong> — search for your game\'s thread.<br>2. Look on <strong>online-fix.me</strong> for a crack.<br>3. Some games simply cannot be cracked. If nobody has a fix posted, it likely can\'t be done.' },
     ],
   },
 
-  getstarted: {
-    id: 'getstarted',
-    label: 'What kind of device are you using?',
+  crash: {
+    id: 'crash', label: 'When does it crash?',
     options: [
-      { text: 'Desktop / Laptop', end: true, answer: 'Getting started is easy! Just open your browser and navigate to our homepage. Create a free account with your email, verify it, and you\'re ready to go. No downloads needed for desktop.' },
-      { text: 'Mobile / Tablet', end: true, answer: 'Download our app from the App Store or Google Play, or just use the mobile web version. Sign up with your email and you\'re all set in under a minute!' },
+      { text: 'Immediately on launch — nothing shows', end: true, answer: '1. Make sure you placed the <strong>.lua file</strong> in <code>C:\\Program Files (x86)\\Steam\\config\\stplug-in\\</code> (create the stplug-in folder if missing).<br>2. Restart Steam after placing the file.<br>3. Try running <strong>CloudRedirect</strong> first, then launch the game.<br>4. Check <strong>#game-fixes</strong> — the game may need a specific crack or fix.<br>5. Some games require installing dependencies (DirectX, VC++ Redist, .NET).' },
+      { text: 'After showing a logo / splash screen', end: true, answer: 'This usually means missing dependencies or a bad crack.<br><br>1. Install <strong>VC++ Redist (all versions)</strong>, <strong>DirectX</strong>, and <strong>.NET Runtime</strong>.<br>2. If you used an online fix, make sure you copied ALL files from the fix (not just the .exe).<br>3. Some games need to be blocked in firewall (add outbound rule for the .exe).<br>4. Check <strong>#game-fixes</strong> for that specific game.' },
     ],
   },
 
-  pricing: {
-    id: 'pricing',
-    label: 'What\'s your budget or use case?',
+  noinet: {
+    id: 'noinet', label: '"No internet connection" / "No licenses" — how are you launching?',
     options: [
-      { text: 'Personal / hobby use', end: true, answer: 'Yes, there\'s a generous free tier! It includes all core features with reasonable usage limits. Perfect for personal projects and learning.' },
-      { text: 'Business / team use', end: true, answer: 'There\'s a free trial, and paid plans start at $12/month per user. Team plans include admin controls, priority support, and higher limits. Contact sales for enterprise pricing.' },
+      { text: 'Using SteamTools only', end: true, answer: '<strong>This is the most common issue.</strong> The fix is <strong>CloudRedirect</strong>.<br><br>1. Download <strong>CloudRedirect</strong> from the Hubcap releases channel or GitHub.<br>2. Run it <strong>before</strong> launching your game. It handles the license check that SteamTools misses.<br>3. If CloudRedirect doesn\'t work, check pinned messages for the <strong>PowerShell fix command</strong>.<br>4. As a last resort, place the manifest files manually in <code>Steam\\depotcache</code> before starting the download.' },
+      { text: 'I AM using CloudRedirect and it still says it', end: true, answer: '1. Make sure CloudRedirect is <strong>running in the background</strong> when you launch. Check the system tray.<br>2. Update CloudRedirect to the latest version.<br>3. Restart your PC — sometimes a stuck Steam process blocks it.<br>4. Try the alternative: manually copy manifest files into <code>Steam\\depotcache</code>, then start Steam.<br>5. If it\'s a specific game, check <strong>#game-fixes</strong> — some games need additional workarounds.' },
     ],
   },
 
-  account: {
-    id: 'account',
-    label: 'What account issue are you having?',
+  nolibrary: {
+    id: 'nolibrary', label: 'Games not in library — what have you tried?',
     options: [
-      { text: 'Can\'t log in', next: 'login' },
-      { text: 'Reset password', next: 'resetpw' },
-      { text: 'Delete my account', next: 'delete' },
+      { text: 'I added the game in SteamTools but it doesn\'t show', end: true, answer: '1. Place the <strong>.lua file</strong> into <code>C:\\Program Files (x86)\\Steam\\config\\stplug-in\\</code>.<br>2. If <strong>stplug-in</strong> folder doesn\'t exist inside config, create it manually.<br>3. <strong>Restart Steam completely</strong> (exit from system tray, not just close window).<br>4. Run <strong>CloudRedirect</strong> before opening Steam.<br>5. After restart, the game should appear in your library ready to download.' },
+      { text: 'I already did that, still nothing', end: true, answer: '1. Double-check the <strong>.lua file is named correctly</strong> — it should be the app ID number (e.g., <code>1234560.lua</code>).<br>2. Make sure it\'s in <code>config\\stplug-in\\</code> not just <code>config\\</code>.<br>3. If you\'re on a new Steam account, you might need to <strong>restart Steam twice</strong>.<br>4. Check the pinned guide in <strong>#how-to-steamtools</strong> for a full walkthrough.' },
     ],
   },
 
-  login: {
-    id: 'login',
-    label: 'What happens when you try to log in?',
+  download: {
+    id: 'download', label: 'What\'s happening with the download?',
     options: [
-      { text: 'Wrong password error', end: true, answer: 'Use the "Forgot password" link on the login page. You\'ll get an email with a reset link. Check spam if you don\'t see it within 5 minutes.' },
-      { text: 'Account not found', end: true, answer: 'Double-check the email address you\'re using. If you signed up with Google or Apple SSO, use that button instead of email login.' },
-      { text: '2FA code not working', end: true, answer: 'Make sure your device clock is synced. If you lost your 2FA device, use one of your backup codes. No backup codes? Contact support with proof of identity.' },
+      { text: 'Stuck on "queued" forever', end: true, answer: '1. Run <strong>CloudRedirect</strong> — this fixes most download queue issues.<br>2. If that doesn\'t work, manually download the <strong>manifest files</strong> and place them in <code>Steam\\depotcache\\</code> before starting Steam.<br>3. Clear Steam\'s download cache: Steam → Settings → Downloads → Clear Download Cache.<br>4. Try changing your Steam download region in settings.' },
+      { text: 'Download starts but stops / hangs mid-way', end: true, answer: '1. Make sure <strong>CloudRedirect is running</strong> in the background during the download.<br>2. Try pausing and resuming the download.<br>3. Check your disk space — Steam silently stops if the drive is full.<br>4. Switch to a different download region in Steam settings.<br>5. If all else fails, use <strong>DepotDownloader</strong> directly instead of Steam.' },
+      { text: 'DepotDownloader doesn\'t work / white flash', end: true, answer: '1. Install <strong>.NET Runtime</strong> — DepotDownloader requires it.<br>2. Right-click the .exe → <strong>Properties → Unblock</strong> (Windows security checkbox).<br>3. Make sure your <strong>API key is correct</strong> with no extra quotes or spaces in the command.<br>4. Try using the newer <strong>DepotDownloader Mod</strong> from the Hubcap releases channel.' },
     ],
   },
 
-  resetpw: {
-    id: 'resetpw',
-    label: 'Have you received the reset email?',
+  apikey: {
+    id: 'apikey', label: 'Where are you trying to get an API key?',
     options: [
-      { text: 'Yes, but link is expired', end: true, answer: 'Reset links expire after 1 hour for security. Just request a new one from the login page. The old link will be invalidated automatically.' },
-      { text: 'No, didn\'t get the email', end: true, answer: 'Check your spam/junk folder first. Still nothing? Make sure you\'re checking the right email — the one you registered with. If it\'s been over 10 minutes, try requesting again.' },
+      { text: 'First time — how do I get one?', end: true, answer: '1. Go to <strong>hubcapmanifest.com</strong>.<br>2. Join the Discord and check the <strong>#api</strong> channel for instructions.<br>3. Use the bot command — typically something like <code>/api</code> or <code>/gen</code>.<br>4. Once generated, your API key is shown once — save it somewhere safe.<br>5. You can retrieve it again from the website or by re-running the command.' },
+      { text: 'I lost my API key', end: true, answer: '1. Go back to <strong>hubcapmanifest.com</strong> — it should show your key again.<br>2. If that doesn\'t work, rerun the <code>/api</code> command in Discord to regenerate.<br>3. Old keys remain valid unless you explicitly revoke them.' },
+      { text: 'API key not working / authentication error', end: true, answer: '1. Check for <strong>extra spaces or quotes</strong> around the key in your config — this is the most common issue.<br>2. Make sure you\'re using the key as a <strong>Bearer token</strong> or the exact format the tool expects.<br>3. API keys expire after some time — regenerate from the website.<br>4. Check the official API documentation for the correct usage format.' },
     ],
   },
 
-  delete: {
-    id: 'delete',
-    label: 'Are you sure you want to delete your account?',
+  av: {
+    id: 'av', label: 'Which tool got flagged?',
     options: [
-      { text: 'Yes, delete permanently', end: true, answer: 'Go to Settings → Account → Delete Account. You\'ll need to confirm with your password. Data is permanently removed after a 30-day grace period. You can cancel during that window by logging in.' },
-      { text: 'Just deactivate temporarily', end: true, answer: 'You can deactivate from Settings → Account → Deactivate. Your data is preserved and you can reactivate anytime by logging back in. Billing pauses during deactivation.' },
+      { text: 'CloudRedirect.exe', end: true, answer: '<strong>This is a false positive.</strong> CloudRedirect is open-source and safe.<br><br>1. Add an <strong>exclusion in Windows Defender</strong> for the CloudRedirect folder.<br>2. Or, compile it yourself from the <strong>GitHub source</strong> if you\'re paranoid.<br>3. Temporarily disable real-time protection while setting it up, then re-enable.<br>4. Virustotal shows only 1 unknown AV flag — this is normal for tools built with PyInstaller.' },
+      { text: 'A .dll file / rune64.dll', end: true, answer: 'Crack .dll files often get flagged. This is normal.<br><br>1. Add an exclusion in your antivirus for the game\'s folder.<br>2. You can also exclude the specific .dll path.<br>3. Only use cracks from trusted sources (online-fix.me, game-fixes channel).' },
+      { text: 'Some other tool from Discord', end: true, answer: '1. Check if the tool is <strong>listed in the official Hubcap releases channel</strong> — if yes, it\'s vetted and safe.<br>2. You can scan with <strong>Virustotal.com</strong> — 1 or 2 flags is normal for crack tools. More than 5 is suspicious.<br>3. When in doubt, ask in the support channel. Don\'t run random tools from unknown users.' },
     ],
   },
 
-  billing: {
-    id: 'billing',
-    label: 'What billing issue do you have?',
+  dlc: {
+    id: 'dlc', label: 'What DLC issue?',
     options: [
-      { text: 'Unexpected charge', next: 'charge' },
-      { text: 'Update payment method', next: 'payment' },
-      { text: 'Cancel subscription', next: 'cancel' },
-      { text: 'Request refund', next: 'refund' },
+      { text: 'DLC not showing / locked after adding game', end: true, answer: '1. Make sure you have the <strong>latest .lua file</strong> for that game — old files may not include DLC.<br>2. DLC content is included in the LUA manifests — no separate file needed for most games.<br>3. For some games, you need <strong>CreamAPI</strong> (check <strong>#game-fixes</strong> for your game).<br>4. Try <strong>CloudRedirect</strong> — it helps DLC recognition.<br>5. Regenerate the LUA from the bot using <code>/gen &lt;appid&gt;</code> for a fresh copy.' },
+      { text: 'DLC worked before but stopped after update', end: true, answer: 'Game updates can break DLC unlocks.<br><br>1. Get a <strong>fresh .lua file</strong> for the updated game version.<br>2. Delete the old .lua from <code>stplug-in</code> and replace it.<br>3. If the game got a major update, check <strong>#game-fixes</strong> — someone may have posted an updated fix.<br>4. Restart Steam after replacing the file.' },
+      { text: 'Specific game: Lies of P, Payday 2, Dead Cells, etc', end: true, answer: 'These games have known DLC workarounds.<br><br>1. Search <strong>#game-fixes</strong> for the game name — dedicated threads exist for popular titles.<br>2. For Payday 2: DLC is handled differently due to its architecture — check the specific guide.<br>3. For Lies of P / Dead Cells: get the latest LUA that includes DLC data.<br>4. If nothing works, post in #game-fixes with your specific game and version.' },
     ],
   },
 
-  charge: {
-    id: 'charge',
-    label: 'When did the charge occur?',
+  multiplayer: {
+    id: 'multiplayer', label: 'What kind of multiplayer?',
     options: [
-      { text: 'This month', end: true, answer: 'Check your Billing → Invoice History for a breakdown. Charges happen on the same date each month. If it doesn\'t match your plan, take a screenshot and contact support — we fix billing errors within 24 hours.' },
-      { text: 'After I canceled', end: true, answer: 'If you canceled mid-cycle, you may still be charged for the current billing period. Check your cancellation confirmation email for the exact end date. If charged after that date, contact support immediately for a refund.' },
+      { text: 'Trying to play with friends (co-op)', end: true, answer: '1. Download the <strong>online fix</strong> from <strong>online-fix.me</strong> for your game.<br>2. You can <strong>only play with other online-fix users</strong> — not with legit Steam owners.<br>3. Copy ALL files from the online fix into the game folder, not just the .exe.<br>4. Some games require logging into an <strong>Epic Games account</strong> via the fix.<br>5. Check the online-fix page for specific instructions per game.' },
+      { text: 'Can\'t connect to any servers / multiplayer menu broken', end: true, answer: '1. Most cracked games cannot connect to official servers — this is normal.<br>2. If the game has LAN support, use a VPN like <strong>Radmin VPN</strong> or <strong>Hamachi</strong> with friends.<br>3. Check <strong>online-fix.me</strong> — they maintain custom servers for many games.<br>4. Some games have open-source multiplayer fixes (Goldberg emulator, etc).' },
+      { text: 'Online fix worked but stopped after update', end: true, answer: 'Game updates break online fixes.<br><br>1. Check <strong>online-fix.me</strong> for an updated fix matching the new game version.<br>2. You may need to <strong>downgrade</strong> your game to match the fix version (check #game-fixes).<br>3. Disable auto-updates for that game in Steam to prevent it from happening again.' },
     ],
   },
 
-  payment: {
-    id: 'payment',
-    label: 'What payment method do you use?',
+  saves: {
+    id: 'saves', label: 'What happened to your save?',
     options: [
-      { text: 'Credit / Debit card', end: true, answer: 'Go to Billing → Payment Methods → Update Card. Enter your new card details. Your next charge will use the new card. Old card info is removed immediately.' },
-      { text: 'PayPal', end: true, answer: 'PayPal management happens on PayPal\'s side. Go to Billing → Payment Methods → Manage PayPal to be redirected. Update your funding source in PayPal, then it syncs automatically.' },
+      { text: 'Saves disappeared after reinstalling', end: true, answer: '1. Check <code>C:\\Program Files (x86)\\Steam\\userdata\\&lt;yourid&gt;\\&lt;appid&gt;\\</code> for remaining save data.<br>2. Some games store saves in <strong>Documents</strong> or <strong>AppData</strong> in addition to the Steam folder.<br>3. If you have a backup, copy saves to <strong>both</strong> the Steam userdata folder AND the game\'s local save location.<br>4. Use <strong>Ludusavi</strong> (free save backup tool) to prevent this in future.' },
+      { text: 'Achievements disappeared after game update', end: true, answer: '1. Game updates can sometimes reset achievement tracking. The achievement data in <code>userdata\\&lt;appid&gt;\\</code> may not be loading.<br>2. Check that the <strong>usergamestats</strong> and <strong>usergamestatschema</strong> files still exist in that folder.<br>3. Run <strong>CloudRedirect</strong> before launching — it can help Steam recognize achievement data.<br>4. If files are gone, they may be irrecoverable without a backup.' },
+      { text: 'I have save files but the game won\'t recognize them', end: true, answer: '1. Make sure saves are in the <strong>correct folder</strong> — each game has its own save location (check PCGamingWiki).<br>2. Try copying them to both the Steam userdata folder AND the game\'s Documents/AppData folder.<br>3. Some games tie saves to your Steam ID — cracked versions may use a different ID, making old saves incompatible.' },
     ],
   },
 
-  cancel: {
-    id: 'cancel',
-    label: 'Why are you canceling?',
+  linux: {
+    id: 'linux', label: 'What Linux issue?',
     options: [
-      { text: 'Too expensive', end: true, answer: 'Before you cancel — we have a lower-cost plan at half the price with most core features. Check it out at Settings → Plans. If it still doesn\'t work, cancel anytime with no fees.' },
-      { text: 'Don\'t need it anymore', end: true, answer: 'No worries! Go to Billing → Cancel Subscription. You\'ll keep access until the end of your billing period. No cancellation fees, and you can resubscribe anytime.' },
-      { text: 'Found an alternative', end: true, answer: 'Go to Billing → Cancel Subscription to cancel. We\'d love to hear what we could do better — there\'s an optional feedback form after cancellation.' },
+      { text: 'How do I use SteamTools on Linux?', end: true, answer: '1. Check the dedicated <strong>Linux support channel</strong> in Discord (linked in the channel topic).<br>2. Linux doesn\'t have CloudRedirect — the setup is different.<br>3. Generally: use <strong>Steam (native Linux)</strong> and manually place LUA files in the appropriate Steam config location (varies by distro).<br>4. Using Linux actually avoids some issues (no license server to go down), but setup is more manual.' },
+      { text: 'Game doesn\'t launch on Linux / Proton', end: true, answer: '1. Check <strong>ProtonDB</strong> for that game\'s compatibility rating and launch options.<br>2. Try different Proton versions (Experimental, GE-Proton).<br>3. For SteamTools games on Linux: the same basics apply — place LUA in the correct Steam config path, restart Steam.<br>4. Ask in the <strong>Linux support channel</strong> for distro-specific help.' },
     ],
   },
 
-  refund: {
-    id: 'refund',
-    label: 'How long ago was the charge?',
+  askbuy: {
+    id: 'askbuy', label: 'It asks you to buy — when does this happen?',
     options: [
-      { text: 'Less than 7 days', end: true, answer: 'You\'re within our refund window! Go to Billing → Request Refund and it\'ll be processed within 3-5 business days. No questions asked.' },
-      { text: 'More than 7 days', end: true, answer: 'Our standard refund window is 7 days, but we review cases individually. Contact support via Billing → Request Refund and explain the situation — we try to be fair.' },
-    ],
-  },
-
-  tech: {
-    id: 'tech',
-    label: 'What kind of technical issue?',
-    options: [
-      { text: 'Something is broken / bug', next: 'bug' },
-      { text: 'Integration / API help', next: 'api' },
-      { text: 'Performance / slow', next: 'perf' },
-    ],
-  },
-
-  bug: {
-    id: 'bug',
-    label: 'Where is the issue happening?',
-    options: [
-      { text: 'Web app / browser', end: true, answer: 'Try clearing your browser cache and disabling extensions first — they\'re the cause 80% of the time. Still broken? Send a bug report with your browser version, what you clicked, and a screenshot to support.' },
-      { text: 'Mobile app', end: true, answer: 'Make sure your app is updated to the latest version. Try uninstalling and reinstalling. If the bug persists, send a report from Settings → Report a Bug (it auto-attaches device info).' },
-    ],
-  },
-
-  api: {
-    id: 'api',
-    label: 'What API issue are you facing?',
-    options: [
-      { text: 'Authentication errors (401)', end: true, answer: 'Your API key may be expired or invalid. Generate a new key from Settings → API Keys. Make sure you\'re sending it as a Bearer token in the Authorization header. Keys expire after 90 days by default.' },
-      { text: 'Rate limiting (429)', end: true, answer: 'Free tier is limited to 100 requests/minute. Upgrade for higher limits. Check the Retry-After header in the response for when you can resume. Implement exponential backoff in your client.' },
-      { text: 'Need documentation', end: true, answer: 'Full API docs are at docs.example.com/api. Quick start guides, SDK examples, and a Postman collection are all there. Join our developer Discord for real-time help.' },
-    ],
-  },
-
-  perf: {
-    id: 'perf',
-    label: 'What feels slow?',
-    options: [
-      { text: 'Page loads', end: true, answer: 'Check your internet connection first. If it\'s fine, we may be experiencing high traffic. Check our status page at status.example.com. The dashboard and reports are the heaviest pages — try during off-peak hours.' },
-      { text: 'Data syncing', end: true, answer: 'Initial sync can be slow for large accounts. Let it complete in the background. Subsequent syncs are incremental and much faster. If sync is stuck, log out and back in to restart it.' },
+      { text: 'After restarting my PC', end: true, answer: '1. <strong>Run CloudRedirect first</strong>, then launch the game — this restores the license bypass.<br>2. Make sure CloudRedirect is set to <strong>start with Windows</strong> to prevent this.<br>3. If you keep getting asked to buy after every restart, your LUA file may be outdated — regenerate it.' },
+      { text: 'Every time, even with CloudRedirect', end: true, answer: '1. Your LUA file may be for the wrong version of the game.<br>2. Regenerate it with <code>/gen &lt;appid&gt;</code> from the bot.<br>3. Some games have additional license checks that CloudRedirect alone can\'t bypass — check <strong>#game-fixes</strong>.' },
     ],
   },
 };
@@ -355,7 +308,6 @@ function render() {
   const stepLabel = document.getElementById('stepLabel');
   const questionArea = document.getElementById('questionArea');
   const resultArea = document.getElementById('resultArea');
-  const breadcrumb = document.getElementById('breadcrumb');
 
   if (pendingAnswer) {
     showResult(pendingAnswer);
@@ -363,7 +315,7 @@ function render() {
     return;
   }
 
-  stepLabel.textContent = node.id === 'start' ? 'Choose a category to begin' : 'Select an option';
+  stepLabel.textContent = node.id === 'start' ? 'Pick your issue from the list below' : 'Choose the option that matches';
   questionArea.classList.remove('hidden');
   resultArea.classList.add('hidden');
 
@@ -371,7 +323,7 @@ function render() {
 
   let html = `<div class="question-label">${node.label}</div>`;
   html += '<div class="options">';
-  node.options.forEach((opt, i) => {
+  node.options.forEach((opt) => {
     html += `<button class="option-btn" onclick="choose('${opt.next || ''}', '${encodeURIComponent(opt.answer || '')}', ${!!opt.end})">${opt.text}</button>`;
   });
   html += '</div>';
@@ -431,8 +383,8 @@ function showResult(answer) {
 
   resultArea.innerHTML = `
     <div class="result-card">
-      <p>${answer}</p>
-      <button class="btn btn-primary" onclick="restart()">Ask Another Question</button>
+      <div class="answer-text">${answer}</div>
+      <button class="btn btn-restart" onclick="restart()">Ask Another Question</button>
     </div>
   `;
 }
