@@ -10,13 +10,12 @@
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-  min-height: 100vh;
-  display: flex; align-items: center; justify-content: center; padding: 20px;
+  min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px;
 }
 
 .container {
   background: #fff; border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-  padding: 36px; max-width: 600px; width: 100%;
+  padding: 36px; max-width: 620px; width: 100%;
   animation: fadeIn 0.3s ease;
 }
 
@@ -69,10 +68,7 @@ h1 { font-size: 22px; color: #1a1a2e; margin-bottom: 4px; }
 }
 
 .story-container { text-align: center; padding: 10px 0; }
-.story-title {
-  font-size: 18px; font-weight: 700; color: #1a1a2e; margin-bottom: 16px;
-  opacity: 0; animation: storyIn 0.5s 0.2s forwards;
-}
+.story-title { font-size: 18px; font-weight: 700; color: #1a1a2e; margin-bottom: 16px; }
 .story-text { font-size: 14px; line-height: 2; color: #444; text-align: left; max-width: 460px; margin: 0 auto; }
 .story-line { opacity: 0; }
 .story-btn-wrap { opacity: 0; }
@@ -92,6 +88,7 @@ h1 { font-size: 22px; color: #1a1a2e; margin-bottom: 4px; }
 <script>
 const faq = {
 
+  /* ── ROOT: OS ─────────────────────────────────────── */
   start: {
     id: 'start', label: 'What operating system are you using?',
     options: [
@@ -102,32 +99,41 @@ const faq = {
     ],
   },
 
+  /* ── WINDOWS: Games or Tools? ─────────────────────── */
   win_games_or_tools: {
-    id: 'win_games_or_tools', label: 'Do you need help with games or with Steam-related tools?',
+    id: 'win_games_or_tools', label: 'Do you need help with games or with tools?',
     options: [
-      { text: 'Games (won\'t launch, crashes, DRM, etc.)', end: 'games' },
-      { text: 'Steam-related tools (SteamTools, Hubcap, etc.)', next: 'tools' },
+      { text: 'Games — won\'t launch, crashes, DRM, fixes', end: 'games' },
+      { text: 'Tools — SteamTools, SLSsteam, DDM, API, Solus Gen, etc.', next: 'tools' },
+      { text: 'General — how this server works, what we do/don\'t do', end: 'general' },
     ],
   },
 
+  /* ── TOOLS ────────────────────────────────────────── */
   tools: {
-    id: 'tools', label: 'Which tool are you using?',
+    id: 'tools', label: 'Which tool are you using or want to learn about?',
     options: [
-      { text: 'SteamTools', next: 'steaminfo' },
-      { text: 'OpenSteamTools', next: 'steaminfo' },
-      { text: 'Hubcap (previously Solus) Manifest App', next: 'othertool' },
+      { text: 'SteamTools (Windows — Steam client mod)', next: 'steaminfo' },
+      { text: 'SLSsteam (Linux — Steam client mod)', end: 'slssteam' },
+      { text: 'DDM / DepotDownloaderMod (no Steam client)', end: 'ddm' },
+      { text: 'Solus Gen — how to get luas & manifests', end: 'solusgen' },
+      { text: 'Solus Manifest App', end: 'solusapp' },
+      { text: 'API usage / API key', next: 'apikey' },
       { text: 'SteamIdra', next: 'othertool' },
       { text: 'LuaTools', next: 'othertool' },
-      { text: 'ACCELA / GreenLuma / Others', next: 'othertool' },
-      { text: 'I\'m new to this — don\'t know where to start', next: 'newbie' },
+      { text: 'ACCELA / GreenLuma / Other', next: 'othertool' },
+      { text: 'I\'m new — don\'t know where to start', next: 'newbie' },
     ],
   },
 
+  /* ── NEWBIE ───────────────────────────────────────── */
   newbie: {
     id: 'newbie', label: 'New to this? Here\'s where to start.',
     options: [
-      { text: 'Show me the SteamTools guide', end: 'newbie_st' },
-      { text: 'Show me the OpenSteamTools guide', end: 'newbie_ost' },
+      { text: 'Show me the Solus Gen guide (get luas)', end: 'newbie_solusgen' },
+      { text: 'Show me the SteamTools guide (Windows)', end: 'newbie_st' },
+      { text: 'Show me SLSsteam (Linux)', end: 'slssteam' },
+      { text: 'Show me DDM (download without Steam)', end: 'ddm' },
     ],
   },
 
@@ -139,44 +145,33 @@ const faq = {
     ],
   },
 
+  /* ── STEAMTOOLS ISSUES ────────────────────────────── */
   steaminfo: {
-    id: 'steaminfo', label: 'What issue are you having?',
+    id: 'steaminfo', label: 'What issue are you having with SteamTools?',
     options: [
-      { text: '"No internet connection" / "No licenses" error', next: 'noinet' },
-      { text: 'Game won\'t launch / "Application load error"', next: 'launch' },
+      { text: '"No internet connection" / "No licenses"', next: 'noinet' },
+      { text: 'Game won\'t launch / Application load error', next: 'launch' },
+      { text: 'Content still encrypted / Invalid config / 0 bytes', end: 'luaerrors' },
       { text: 'Game not appearing in my Steam library', next: 'nolibrary' },
-      { text: 'Download stuck on "queued" / won\'t start', next: 'download' },
-      { text: 'How do I get an API key?', next: 'apikey' },
-      { text: 'Is this tool safe? / Antivirus flagged it', next: 'av' },
-      { text: 'DLC not working / content still locked', next: 'dlc' },
-      { text: 'Multiplayer / online not working', next: 'multiplayer' },
+      { text: 'Download stuck or queued', next: 'download' },
+      { text: 'DLC not working / content locked', next: 'dlc' },
+      { text: 'Multiplayer / online play', next: 'multiplayer' },
       { text: 'Save files or achievements lost', next: 'saves' },
+      { text: 'Download older version of a game', end: 'oldversion' },
+      { text: 'Workshop items not downloading', end: 'workshop' },
+      { text: 'Is this safe? / Antivirus flagged it', next: 'av' },
     ],
   },
 
+  /* ── LAUNCH ERRORS ────────────────────────────────── */
   launch: {
     id: 'launch', label: 'What error do you see?',
     options: [
-      { text: '"Application load error" with a number', next: 'apploaderr' },
-      { text: 'Game crashes instantly / nothing happens', next: 'crash' },
-      { text: '"No licenses" error', next: 'noinet' },
+      { text: '"Application load error" / "failed to start" with code', end: 'launch_steamstub' },
+      { text: 'Pressing Play does nothing / no error message', end: 'launch_ceg' },
+      { text: '"Sorry, something went wrong" / Denuvo error', end: 'launch_denuvo' },
+      { text: 'Game crashes instantly', end: 'launch_crash' },
       { text: 'Asks me to buy the game', next: 'askbuy' },
-    ],
-  },
-
-  apploaderr: {
-    id: 'apploaderr', label: 'Do you know if the game has DRM protection?',
-    options: [
-      { text: 'Not sure / what\'s DRM?', end: 'apploaderr_nodrm' },
-      { text: 'I already ran Steamless — still broken', end: 'apploaderr_steamless' },
-    ],
-  },
-
-  crash: {
-    id: 'crash', label: 'When does it crash?',
-    options: [
-      { text: 'Immediately on launch — nothing shows', end: 'crash_immediate' },
-      { text: 'After showing a logo / splash screen', end: 'crash_splash' },
     ],
   },
 
@@ -189,18 +184,18 @@ const faq = {
   },
 
   noinet: {
-    id: 'noinet', label: '"No internet" / "No licenses" — how are you launching?',
+    id: 'noinet', label: '"No internet" / "No licenses" — what\'s your setup?',
     options: [
       { text: 'Using SteamTools only (no CloudRedirect)', end: 'noinet_nocr' },
-      { text: 'I AM running CloudRedirect but still have the error', end: 'noinet_withcr' },
+      { text: 'Running CloudRedirect but still broken', end: 'noinet_withcr' },
     ],
   },
 
   nolibrary: {
     id: 'nolibrary', label: 'Games not in library — what have you tried?',
     options: [
-      { text: 'I added the game in the tool but it doesn\'t show', end: 'nolibrary_added' },
-      { text: 'I already did all the steps — still nothing', end: 'nolibrary_still' },
+      { text: 'Added game in SteamTools but it doesn\'t show', end: 'nolibrary_added' },
+      { text: 'Did all the steps — still nothing', end: 'nolibrary_still' },
     ],
   },
 
@@ -209,14 +204,14 @@ const faq = {
     options: [
       { text: 'Stuck on "queued" forever', end: 'download_queued' },
       { text: 'Starts but stops / hangs mid-way', end: 'download_hangs' },
-      { text: 'DepotDownloader doesn\'t work / white flash', end: 'download_depot' },
+      { text: 'DepotDownloader doesn\'t work', end: 'download_depot' },
     ],
   },
 
   apikey: {
-    id: 'apikey', label: 'What\'s your API key situation?',
+    id: 'apikey', label: 'What\'s your API situation?',
     options: [
-      { text: 'First time — how do I get one?', end: 'apikey_first' },
+      { text: 'First time — what is API and how do I get a key?', end: 'apikey_first' },
       { text: 'I lost my API key', end: 'apikey_lost' },
       { text: 'Authentication error / key not working', end: 'apikey_auth' },
     ],
@@ -226,7 +221,7 @@ const faq = {
     id: 'av', label: 'Which tool got flagged?',
     options: [
       { text: 'CloudRedirect.exe', end: 'av_cloudredirect' },
-      { text: 'A .dll file (rune64.dll, steam_api64.dll, etc.)', end: 'av_dll' },
+      { text: 'A crack .dll file', end: 'av_dll' },
       { text: 'Some other tool from Discord', end: 'av_other' },
     ],
   },
@@ -236,16 +231,18 @@ const faq = {
     options: [
       { text: 'DLC not showing / still locked', end: 'dlc_locked' },
       { text: 'DLC worked before, stopped after update', end: 'dlc_update' },
-      { text: 'Specific game (Lies of P, Payday 2, etc.)', end: 'dlc_specific' },
+      { text: 'Specific game DLC (Lies of P, Payday 2, etc.)', end: 'dlc_specific' },
+      { text: 'Missing DLC — how to request it', end: 'dlc_request' },
     ],
   },
 
   multiplayer: {
-    id: 'multiplayer', label: 'What kind of multiplayer?',
+    id: 'multiplayer', label: 'What multiplayer issue?',
     options: [
       { text: 'Trying to play co-op with friends', end: 'multi_coop' },
       { text: 'Can\'t connect to any servers', end: 'multi_servers' },
       { text: 'Online fix broke after game update', end: 'multi_update' },
+      { text: 'How to play online (general info)', end: 'multi_howto' },
     ],
   },
 
@@ -254,80 +251,116 @@ const faq = {
     options: [
       { text: 'Saves disappeared after reinstalling', end: 'saves_gone' },
       { text: 'Achievements disappeared after update', end: 'saves_achievements' },
-      { text: 'I have save files but game won\'t recognize them', end: 'saves_recognize' },
+      { text: 'Save files exist but game won\'t recognize them', end: 'saves_recognize' },
     ],
   },
 };
 
-/* ── Answer lookup ─────────────────────────────────── */
+/* ── ANSWERS ────────────────────────────────────────── */
 const answers = {
-  linux: 'Check the <strong>Linux guides and support channel</strong> in Discord.<br><br>⇒ <a href="https://discord.com/channels/1327856038967246970/1447905805419679889" target="_blank">#linux-guides</a><br>⇒ <a href="https://discord.com/channels/1327856038967246970/1444020081347793136" target="_blank">#linux-support</a><br><br>General tips:<br>• No CloudRedirect on Linux — setup is different.<br>• Place LUA files in the correct Steam config path for your distro.<br>• Check <strong>ProtonDB</strong> for game compatibility and Proton versions.',
+  linux: 'Check the <strong>Linux guides and support channels</strong>:<br><br>⇒ <a href="https://discord.com/channels/1327856038967246970/1447905805419679889" target="_blank">#linux-guides (SLSsteam setup)</a><br>⇒ <a href="https://discord.com/channels/1327856038967246970/1444020081347793136" target="_blank">#linux-support</a><br><br>Additional Linux resources:<br>• <a href="https://discord.com/channels/1327856038967246970/1453167521502072842" target="_blank">Linux game-fixes forum</a><br>• <a href="https://github.com/YoteZip/LinuxCrackingBible" target="_blank">Linux Cracking Bible (GitHub)</a><br>• Check <strong>ProtonDB</strong> for game compatibility.',
 
-  steamdeck: 'Check the <strong>Linux guides and support channels</strong> — Steam Deck runs Linux and all Linux advice applies.<br><br>⇒ <a href="https://discord.com/channels/1327856038967246970/1447905805419679889" target="_blank">#linux-guides</a><br>⇒ <a href="https://discord.com/channels/1327856038967246970/1444020081347793136" target="_blank">#linux-support</a><br><br>• Check <strong>ProtonDB</strong> for game compatibility.<br>• Try Proton Experimental or GE-Proton for stubborn games.',
+  steamdeck: 'Check the <strong>Linux guides and support channels</strong>:<br><br>⇒ <a href="https://discord.com/channels/1327856038967246970/1447905805419679889" target="_blank">#linux-guides (SLSsteam setup)</a><br>⇒ <a href="https://discord.com/channels/1327856038967246970/1444020081347793136" target="_blank">#linux-support</a><br><br>• Check <strong>ProtonDB</strong> for compatibility.<br>• Try Proton Experimental or GE-Proton for stubborn games.',
 
-  macos: 'macOS is not officially supported. SteamTools and most related tools are Windows-only.<br><br>If you\'re running Windows via Boot Camp or a VM, select <strong>Windows</strong> instead.',
+  macos: 'macOS is not officially supported. All tools are Windows or Linux only.<br><br>If running Windows via Boot Camp or a VM, select <strong>Windows</strong> instead.',
 
-  games: 'Game issues should be checked in <strong>#game-fixes</strong> first — that\'s where specific game fixes, cracks, and workarounds are posted.<br><br>⇒ Head to <a href="https://discord.com/channels/1327856038967246970/1369722589471182920" target="_blank">#game-fixes</a> and search for your game\'s thread.<br><br>If no fix exists for your game, it may be unplayable without buying it.',
+  /* ── GENERAL ─────────────────────── */
+  general: '<strong>What this server does:</strong><br>• Distribute <strong>.manifest files, PICS tokens, and depot keys</strong> (as <code>.lua</code> files)<br>• These let you download game files directly from Steam servers<br>• <a href="https://steamdb.info/faq/" target="_blank">SteamDB FAQ</a> explains the technical details<br><br><strong>What we DON\'T do:</strong><br>• ❌ Denuvo activations<br>• ❌ Crack games<br>• ❌ Make online-fixes<br>• ❌ Share game accounts<br><br><strong>Resources:</strong><br>• <a href="https://discord.com/channels/1327856038967246970/1370466257710874754" target="_blank">Solus Gen guide</a> — how to get luas<br>• <a href="https://discord.com/channels/1327856038967246970/1435252050391990322" target="_blank">API info</a> — programmatic access<br>• <a href="https://github.com/MorrenusGames/Solus-Manifest-App" target="_blank">Solus Manifest App</a> — desktop app',
 
-  newbie_st: 'Start here for the full SteamTools setup walkthrough:<br><br>⇒ <a href="https://discord.com/channels/1327856038967246970/1370719442933252198" target="_blank">#steamtools-guide</a><br><br>This covers: installation, adding games, placing Lua files, and solving common issues.',
+  /* ── GAMES ───────────────────────── */
+  games: 'Check <strong>#game-fixes</strong> first:<br>⇒ <a href="https://discord.com/channels/1327856038967246970/1369722589471182920" target="_blank">#game-fixes forum</a><br><br><strong>Where to find fixes yourself:</strong><br>• <a href="https://cs.rin.ru/forum/viewforum.php?f=10" target="_blank">cs.rin.ru main forum</a><br>• <a href="https://gamecopyworld.com/games/index.php" target="_blank">GamesCopyWorld</a> — trusted scene cracks<br>• Ubisoft games: <a href="https://cs.rin.ru/forum/viewtopic.php?f=29&t=67197" target="_blank">LumaPlay</a> or <a href="https://cs.rin.ru/forum/viewtopic.php?p=3021928#p3021928" target="_blank">patched Uplay emu</a><br>• EA games: <a href="https://cs.rin.ru/forum/viewtopic.php?f=29&t=115335" target="_blank">Origin emulator by anadius</a><br><br>Fixes are tested mostly on Windows. Linux-tested ones have a "Verified on Linux" tag.',
 
-  newbie_ost: 'OpenSteamTools is an open-source alternative. Here\'s the setup guide:<br><br>⇒ <a href="https://discord.com/channels/1327856038967246970/1518272283997769909" target="_blank">#opensteamtools-guide</a>',
+  /* ── TOOLS ───────────────────────── */
+  slssteam: 'SLSsteam is the Linux alternative to SteamTools.<br><br>⇒ Full guide: <a href="https://discord.com/channels/1327856038967246970/1447905805419679889" target="_blank">#linux-guides</a><br><br>All Linux setup is documented there. For help, ask in <a href="https://discord.com/channels/1327856038967246970/1444020081347793136" target="_blank">#linux-support</a>.',
 
-  apploaderr_nodrm: '<strong>Application Load Error means the game has DRM.</strong><br><br>1. Run <strong>Steamless</strong> on the game\'s .exe — this removes SteamStub DRM. If you get "Index out of range" on 32bit games, use <strong>Steamless v3.1.0.3</strong>.<br>2. If that doesn\'t work, the game has <strong>Denuvo/Themida/other DRM</strong>. Check <strong>#game-fixes</strong>.<br>3. Some games need a crack from <strong>online-fix.me</strong>.<br>4. If nothing works, the game may not be playable without buying it.',
+  ddm: '<strong>DDM (DepotDownloaderMod)</strong> lets you download games without the Steam client at all.<br><br>⇒ Guide: <a href="https://discord.com/channels/1327856038967246970/1448643966445686834" target="_blank">#ddm-guide</a><br>⇒ Pre-made DDM scripts: <a href="https://discord.com/channels/1327856038967246970/1419429942533292143" target="_blank">#ddm-scripts</a><br><br>DDM uses an anonymous Steam account — no risk to your main account.<br><br><strong>Playing without Steam client:</strong><br>1. Download files with DDM<br>2. Apply <a href="https://github.com/Detanup01/gbe_fork" target="_blank">Goldberg emu fork</a><br>3. Generate config with <a href="https://github.com/GogoVang/gbe_fork_tools/releases/latest" target="_blank">GBE tools</a> or <a href="https://github.com/otavepto/gen.emu.sharp" target="_blank">C# generator</a><br>4. Apply <strong>Steamless</strong> if needed<br>5. Everything from "Games" section applies too',
 
-  apploaderr_steamless: 'If Steamless didn\'t fix it, the game has non-SteamStub DRM (Denuvo, Themida, etc.).<br><br>1. Check <strong>#game-fixes</strong> — search for your game\'s thread.<br>2. Look on <strong>online-fix.me</strong> for a crack.<br>3. Some games cannot be cracked. If nobody has a fix, it likely can\'t be done.',
+  solusgen: '<strong>Solus Gen</strong> is the main way to get luas and manifests.<br><br>⇒ Full guide: <a href="https://discord.com/channels/1327856038967246970/1370466257710874754" target="_blank">#solus-gen-guide</a><br><br><strong>Generators:</strong><br>• <a href="https://discord.com/channels/1327856038967246970/1366804211270156298" target="_blank">#main-gen</a> — standard games<br>• <a href="https://discord.com/channels/1327856038967246970/1420586512772239370" target="_blank">#adult-gen</a> — 18+ games<br>• <a href="https://discord.com/channels/1327856038967246970/1402278681774391369" target="_blank">#workshop-gen</a> — workshop manifests<br><br><strong>Requesting missing games:</strong><br>Use <a href="https://discord.com/channels/1327856038967246970/1366804169234714756" target="_blank">#game-requests</a> — read the posting guidelines first. Missing DLC goes in <a href="https://discord.com/channels/1327856038967246970/1369722796237918409" target="_blank">#dlc-fixes</a>.',
 
-  crash_immediate: '1. Make sure the <strong>.lua file</strong> is in <code>C:\\Program Files (x86)\\Steam\\config\\stplug-in\\</code> (create the folder if missing).<br>2. <strong>Restart Steam</strong> after placing the file.<br>3. Run <strong>CloudRedirect</strong> first, then launch the game.<br>4. Check <strong>#game-fixes</strong> — the game may need a specific fix.<br>5. Install dependencies: DirectX, VC++ Redist, .NET Runtime.',
+  solusapp: '<strong>Solus Manifest App</strong> is a desktop app that works with SteamTools for convenience and has built-in DepotDownloaderMod.<br><br>⇒ <a href="https://github.com/MorrenusGames/Solus-Manifest-App" target="_blank">GitHub</a><br>⇒ <a href="https://discord.com/channels/1327856038967246970/1443039611948372039" target="_blank">#solus-app-announcements</a><br>⇒ Bug reports: <a href="https://discord.com/channels/1327856038967246970/1440728506274287696" target="_blank">#solus-bug-reports</a><br><br><strong>Note:</strong> The website <code>manifest.morrenus.xyz</code> may contain outdated files. Use Solus Gen or the API for latest versions.',
 
-  crash_splash: 'Usually missing dependencies or a bad crack.<br><br>1. Install all <strong>VC++ Redist versions</strong>, <strong>DirectX</strong>, and <strong>.NET Runtime</strong>.<br>2. If using an online fix, copy ALL files from the fix folder, not just the .exe.<br>3. Some games need a firewall outbound block on the .exe.<br>4. Check <strong>#game-fixes</strong> for that specific game.',
+  newbie_solusgen: '<strong>Start with Solus Gen</strong> — it\'s how you get the <code>.lua</code> files (manifests + depot keys):<br><br>⇒ Guide: <a href="https://discord.com/channels/1327856038967246970/1370466257710874754" target="_blank">#solus-gen-guide</a><br><br>Once you have luas, you need a tool to use them:<br>• <strong>Windows:</strong> SteamTools or DDM<br>• <strong>Linux:</strong> SLSsteam<br><br>Come back and pick your OS!',
 
-  askbuy_restart: '1. <strong>Run CloudRedirect first</strong>, then launch the game — this restores the license bypass.<br>2. Set CloudRedirect to start with Windows to prevent this.<br>3. If it keeps happening, your LUA file may be outdated — regenerate it.<br>4. If you\'re on a new Steam account, restart Steam twice.',
+  newbie_st: 'Start here for the full SteamTools setup walkthrough:<br><br>⇒ <a href="https://discord.com/channels/1327856038967246970/1370719442933252198" target="_blank">#steamtools-guide</a><br><br>Covers: installation, adding games, placing Lua files, and solving common issues.',
 
-  askbuy_always: '1. Your LUA file may be for the wrong game version — regenerate with <code>/gen &lt;appid&gt;</code>.<br>2. Some games have extra license checks CloudRedirect alone can\'t bypass — check <strong>#game-fixes</strong>.<br>3. Try the alternative Steam.dll bypass (check pinned messages in support).',
+  /* ── LAUNCH ERRORS ──────────────── */
+  launch_steamstub: '<strong>Application Load Error = SteamStub DRM.</strong><br><br>1. Run <strong><a href="https://github.com/atom0s/Steamless/releases/latest" target="_blank">Steamless</a></strong> on the game\'s <code>.exe</code>.<br>2. Latest Steamless is buggy with 32bit games — if you get "Index out of range", use <strong>v3.1.0.3</strong>.<br>3. If still broken, check <a href="https://discord.com/channels/1327856038967246970/1369722589471182920" target="_blank">#game-fixes</a> or the sources listed in the Games section.',
 
-  noinet_nocr: '<strong>This is the #1 most common issue.</strong> The fix is <strong>CloudRedirect</strong>.<br><br><strong>NO INTERNET CONNECTION / PURCHASE FIX:</strong><br>1. Download CloudRedirect from <a href="https://github.com/Selectively11/CloudRedirect/releases/" target="_blank">github.com/Selectively11/CloudRedirect/releases</a><br>2. Open <strong>CloudRedirect.exe</strong><br>3. Go to the <strong>Setup tab</strong><br>4. Click <strong>"Run All Patches"</strong><br>5. It will close Steam — that\'s normal. Restart Steam and your game works.<br><br>Still broken? Check pinned messages for the PowerShell fix, or place manifest files in <code>Steam\\depotcache</code> before download.',
+  launch_ceg: '<strong>Pressing Play does nothing = CEG DRM.</strong><br><br>CEG (Custom Executable Generation) requires a specific crack.<br>Most CEG games are documented in <a href="https://discord.com/channels/1327856038967246970/1369722589471182920" target="_blank">#game-fixes</a> — search for your game\'s thread.<br><br>Also check <a href="https://cs.rin.ru/forum/viewforum.php?f=10" target="_blank">cs.rin.ru</a> and <a href="https://gamecopyworld.com/games/index.php" target="_blank">GamesCopyWorld</a>.',
 
-  noinet_withcr: '1. Make sure CloudRedirect is <strong>running in the background</strong> — check system tray.<br>2. <strong>Update CloudRedirect</strong> from <a href="https://github.com/Selectively11/CloudRedirect/releases/" target="_blank">GitHub releases</a>.<br>3. Go to <strong>Setup tab → Run All Patches</strong> again.<br>4. <strong>Restart your PC</strong> — a stuck Steam process can block it.<br>5. Alternative: copy manifest files into <code>Steam\\depotcache</code>, then start Steam.<br>6. For specific games, check <strong>#game-fixes</strong>.',
+  launch_denuvo: '<strong>"Sorry, something went wrong" = Denuvo Anti-Tamper.</strong><br><br>1. Check if the game has been cracked — search <a href="https://discord.com/channels/1327856038967246970/1369722589471182920" target="_blank">#game-fixes</a> and the other fix sources.<br>2. If not cracked, you\'ll need a Denuvo activation:<br>• <a href="https://discord.gg/anti-denuvo-sanctuary" target="_blank">Anti Denuvo Sanctuary</a><br>• <a href="https://discord.gg/pubslounge" target="_blank">Pub\'s Lounge</a><br><br>This server does <strong>not</strong> provide Denuvo activations.',
 
-  nolibrary_added: '1. Place the <strong>.lua file</strong> in <code>C:\\Program Files (x86)\\Steam\\config\\stplug-in\\</code>.<br>2. If <strong>stplug-in</strong> folder doesn\'t exist inside config, <strong>create it manually</strong>.<br>3. <strong>Exit Steam completely</strong> from the system tray (not just close window).<br>4. Run <strong>CloudRedirect</strong> before restarting Steam.<br>5. After restart, the game should appear in your library.',
+  launch_crash: '1. Make sure the <strong>.lua file</strong> is in <code>C:\\Program Files (x86)\\Steam\\config\\stplug-in\\</code> (create folder if missing).<br>2. <strong>Restart Steam</strong> after placing the file.<br>3. Run <strong>CloudRedirect</strong> first, then launch the game.<br>4. Install dependencies: DirectX, VC++ Redist, .NET Runtime.<br>5. Check <a href="https://discord.com/channels/1327856038967246970/1369722589471182920" target="_blank">#game-fixes</a>.',
 
-  nolibrary_still: '1. Double-check the <strong>.lua file is named correctly</strong> — should be the app ID (e.g., <code>1234560.lua</code>).<br>2. Make sure it\'s in <code>config\\stplug-in\\</code>, not just <code>config\\</code>.<br>3. On a new Steam account, restart Steam twice.<br>4. Check the pinned guide in <strong>#how-to-steamtools</strong>.',
+  /* ── LUA ERRORS ─────────────────── */
+  luaerrors: '<strong>Common .lua errors and their meanings:</strong><br><br>• <strong>"Content still encrypted"</strong> — problem with depot keys<br>• <strong>"Invalid content configuration"</strong> — missing or invalid token<br>• <strong>"0 bytes download"</strong> — missing depot key for your platform<br>• <strong>Workshop not working / no file from workshop gen</strong> — missing workshop key<br><br><strong>For all of the above:</strong> report in <a href="https://discord.com/channels/1327856038967246970/1370190514036543572" target="_blank">#manifest-errors</a>. Make sure to follow the posting guidelines.',
 
-  download_queued: '1. Run <strong>CloudRedirect</strong> — fixes most queue issues.<br>2. Manually download manifest files into <code>Steam\\depotcache\\</code> before starting Steam.<br>3. Clear Steam\'s download cache: Settings → Downloads → Clear Download Cache.<br>4. Change Steam download region.<br>5. Downloads go through Steam servers — speed depends on region and time (weekends are slower).',
+  /* ── OLD VERSION ────────────────── */
+  oldversion: '<strong>Download an older version of a game:</strong><br><br>• Via SteamTools: <a href="https://discord.com/channels/1327856038967246970/1460231795671961675" target="_blank">SteamTools old version guide</a><br>• Via DepotDownloaderMod: <a href="https://discord.com/channels/1327856038967246970/1460313806797279469" target="_blank">DDM old version guide</a>',
 
-  download_hangs: '1. Keep <strong>CloudRedirect running</strong> during download.<br>2. Pause and resume.<br>3. Check disk space — Steam silently stops if full.<br>4. Switch Steam download region.<br>5. Use <strong>DepotDownloader</strong> directly instead.',
+  /* ── WORKSHOP ───────────────────── */
+  workshop: '<strong>Workshop items not downloading?</strong><br><br><strong>SteamTools:</strong> Just subscribe to the item. You need a valid workshop key. If you get "Content still encrypted", the workshop key is missing — report in <a href="https://discord.com/channels/1327856038967246970/1370190514036543572" target="_blank">#manifest-errors</a>.<br><br><strong>DepotDownloaderMod:</strong> <a href="https://discord.com/channels/1327856038967246970/1459631833422500072" target="_blank">DDM workshop guide</a>',
 
-  download_depot: '1. Install <strong>.NET Runtime</strong> — DepotDownloader requires it.<br>2. Right-click the .exe → <strong>Properties → Unblock</strong>.<br>3. Check API key has <strong>no extra quotes or spaces</strong> in the command.<br>4. Try the newer <strong>DepotDownloader Mod</strong> from Hubcap releases.',
+  /* ── ASK TO BUY ─────────────────── */
+  askbuy_restart: '1. <strong>Run CloudRedirect first</strong>, then launch the game — restores license bypass.<br>2. Set CloudRedirect to start with Windows to prevent this.<br>3. If it keeps happening, regenerate your LUA file.<br>4. On a new Steam account, restart Steam twice.',
 
-  apikey_first: '1. Go to <strong>hubcapmanifest.com</strong>.<br>2. Join the Discord and check <strong>#api</strong> channel.<br>3. Use bot command — typically <code>/api</code> or <code>/gen</code>.<br>4. Your API key is shown once — save it somewhere safe.<br>5. You can retrieve it again from the website.',
+  askbuy_always: '1. Your LUA file may be for the wrong game version — regenerate with <code>/gen &lt;appid&gt;</code>.<br>2. Some games have extra license checks — check <a href="https://discord.com/channels/1327856038967246970/1369722589471182920" target="_blank">#game-fixes</a>.<br>3. Try the alternative Steam.dll bypass (check pinned messages in support).',
 
-  apikey_lost: '1. Go back to <strong>hubcapmanifest.com</strong> — it should show your key.<br>2. If not, rerun <code>/api</code> in Discord to regenerate.<br>3. Old keys remain valid unless you revoke them.',
+  /* ── NO INTERNET ────────────────── */
+  noinet_nocr: '<strong>This is the #1 most common issue.</strong> The fix is <strong>CloudRedirect</strong>.<br><br><strong>NO INTERNET CONNECTION / PURCHASE FIX:</strong><br>1. Download from <a href="https://github.com/Selectively11/CloudRedirect/releases/" target="_blank">github.com/Selectively11/CloudRedirect/releases</a><br>2. Open <strong>CloudRedirect.exe</strong><br>3. Go to <strong>Setup tab</strong><br>4. Click <strong>"Run All Patches"</strong><br>5. It closes Steam — that\'s normal. Restart Steam and your game works.<br><br>Still broken? Check pinned messages for PowerShell fix, or place manifest files in <code>Steam\\depotcache</code> before download.',
 
-  apikey_auth: '1. Check for <strong>extra spaces or quotes</strong> around the key — the #1 issue.<br>2. Make sure you\'re using the key in the exact format the tool expects (usually Bearer token).<br>3. API keys expire — regenerate from the website.<br>4. Check the official API docs for correct usage.',
+  noinet_withcr: '1. Make sure CloudRedirect is <strong>running in background</strong> (check system tray).<br>2. <strong>Update CloudRedirect</strong> from <a href="https://github.com/Selectively11/CloudRedirect/releases/" target="_blank">GitHub releases</a>.<br>3. Go to <strong>Setup tab → Run All Patches</strong> again.<br>4. <strong>Restart your PC</strong> — stuck Steam process can block it.<br>5. Alternative: copy manifest files into <code>Steam\\depotcache</code>, then start Steam.<br>6. Check <a href="https://discord.com/channels/1327856038967246970/1369722589471182920" target="_blank">#game-fixes</a> for game-specific workarounds.',
 
-  av_cloudredirect: '<strong>Yes, it\'s safe. This is a false positive.</strong> CloudRedirect is open-source.<br><br>1. Add <strong>exclusion in Windows Defender</strong> for the CloudRedirect folder.<br>2. Or compile it from <strong>GitHub source</strong> if you want to verify.<br>3. Temporarily disable real-time protection during setup, then re-enable.<br>4. Virustotal shows only 1 unknown AV flag — normal for PyInstaller tools.<br><br><strong>Bottom line: it\'s completely safe, just add an exclusion.</strong>',
+  /* ── NOT IN LIBRARY ─────────────── */
+  nolibrary_added: '1. Place the <strong>.lua file</strong> in <code>C:\\Program Files (x86)\\Steam\\config\\stplug-in\\</code>.<br>2. If <strong>stplug-in</strong> folder doesn\'t exist, <strong>create it</strong>.<br>3. <strong>Exit Steam completely</strong> from system tray.<br>4. Run <strong>CloudRedirect</strong> before restarting Steam.<br>5. Game should appear in your library.',
 
-  av_dll: '<strong>Yes, it\'s safe.</strong> Crack .dll files trigger antivirus because of how they work — not because they\'re malicious.<br><br>1. Add exclusion in your AV for the game\'s folder.<br>2. Exclude the specific .dll path.<br>3. Only use cracks from trusted sources: <strong>online-fix.me</strong> or <strong>#game-fixes</strong>.<br><br><strong>Standard cracks will always flag — that\'s normal and safe.</strong>',
+  nolibrary_still: '1. Check the .lua file is <strong>named correctly</strong> — app ID only (e.g., <code>1234560.lua</code>).<br>2. Make sure it\'s in <code>config\\stplug-in\\</code>, not just <code>config\\</code>.<br>3. New Steam account? Restart Steam twice.<br>4. Check the pinned guide in <a href="https://discord.com/channels/1327856038967246970/1370719442933252198" target="_blank">#steamtools-guide</a>.',
 
-  av_other: '<strong>Yes, it\'s almost certainly safe.</strong> Tools in this community are open-source and vetted.<br><br>1. If it\'s in the <strong>official Hubcap releases channel</strong>, it\'s vetted and safe.<br>2. Scan with <strong>Virustotal.com</strong> — 1-2 flags is normal. 5+ is suspicious.<br>3. When in doubt, ask in support — but these tools are safe.<br><br><strong>Don\'t worry. The community tools are trusted and well-tested.</strong>',
+  /* ── DOWNLOAD ───────────────────── */
+  download_queued: '1. Run <strong>CloudRedirect</strong> — fixes most queue issues.<br>2. Manually place manifest files in <code>Steam\\depotcache\\</code>.<br>3. Clear Steam download cache: Settings → Downloads → Clear Download Cache.<br>4. Change Steam download region.<br>5. Downloads go through Steam servers — speed depends on region and time.',
 
-  dlc_locked: '1. Get the <strong>latest .lua file</strong> — old files may not include DLC data.<br>2. DLC content is included in LUA manifests — no separate file for most games.<br>3. Some games need <strong>CreamAPI</strong> — check <strong>#game-fixes</strong>. Unlike SteamTools which injects into Steam, CreamAPI only affects the individual game.<br>4. Run <strong>CloudRedirect</strong> — helps DLC recognition.<br>5. Regenerate: <code>/gen &lt;appid&gt;</code> from the bot.',
+  download_hangs: '1. Keep <strong>CloudRedirect running</strong> during download.<br>2. Pause and resume.<br>3. Check disk space — Steam stops silently if full.<br>4. Switch Steam download region.<br>5. Use <strong>DDM (DepotDownloaderMod)</strong> instead.',
 
-  dlc_update: 'Game updates can break DLC unlocks.<br><br>1. Get a <strong>fresh .lua file</strong> for the updated version.<br>2. Delete the old .lua from <code>stplug-in</code> and replace it.<br>3. Check <strong>#game-fixes</strong> — someone may have an updated fix.<br>4. Restart Steam after replacing the file.',
+  download_depot: '1. Install <strong>.NET Runtime</strong> — DepotDownloader requires it.<br>2. Right-click .exe → <strong>Properties → Unblock</strong>.<br>3. Check API key has <strong>no extra quotes or spaces</strong>.<br>4. Try the newer <strong>DepotDownloaderMod</strong> from #ddm-guide.',
 
-  dlc_specific: 'These games have known DLC workarounds.<br><br>1. Search <strong>#game-fixes</strong> for the game name.<br>2. Payday 2: DLC uses a different system — check the specific guide.<br>3. Lies of P / Dead Cells: get the latest LUA with DLC data.<br>4. If nothing works, post in #game-fixes with game and version.',
+  /* ── API KEY ────────────────────── */
+  apikey_first: 'All API info is here:<br>⇒ <a href="https://discord.com/channels/1327856038967246970/1435252050391990322" target="_blank">#api-info</a><br><br>The API works with <a href="https://github.com/MorrenusGames/Solus-Manifest-App" target="_blank">Solus Manifest App</a> for programmatic access to manifests and depot keys.',
 
-  multi_coop: '1. Download the <strong>online fix</strong> from <strong>online-fix.me</strong> for your game.<br>2. You can <strong>only play with other online-fix users</strong> — not with legit Steam owners.<br>3. Copy ALL files from the fix into the game folder, not just the .exe.<br>4. Some games require logging into an <strong>Epic Games account</strong> via the fix.<br>5. Check the online-fix page for game-specific instructions.',
+  apikey_lost: '1. Check <strong>hubcapmanifest.com</strong> — your key may still be visible.<br>2. If not, rerun the API command in Discord to regenerate.<br>3. Old keys remain valid unless revoked.<br>4. API info: <a href="https://discord.com/channels/1327856038967246970/1435252050391990322" target="_blank">#api-info</a>',
 
-  multi_servers: '1. Most cracked games cannot reach official servers — normal behavior.<br>2. For LAN support, use <strong>Radmin VPN</strong> or <strong>Hamachi</strong> with friends.<br>3. Check <strong>online-fix.me</strong> — they run custom servers for many games.<br>4. Some games have open-source fixes (Goldberg emulator, etc.).',
+  apikey_auth: '1. Check for <strong>extra spaces or quotes</strong> around the key — #1 cause.<br>2. Use the exact format the tool expects (usually Bearer token).<br>3. API keys expire — regenerate from the website.<br>4. Full docs: <a href="https://discord.com/channels/1327856038967246970/1435252050391990322" target="_blank">#api-info</a>',
 
-  multi_update: 'Game updates break online fixes.<br><br>1. Check <strong>online-fix.me</strong> for an updated fix matching the new version.<br>2. You may need to <strong>downgrade</strong> your game to match the fix (check #game-fixes).<br>3. <strong>Disable auto-updates</strong> for that game in Steam.',
+  /* ── ANTIVIRUS ──────────────────── */
+  av_cloudredirect: '<strong>Yes, it\'s safe. False positive.</strong> CloudRedirect is open-source.<br><br>1. Add exclusion in Windows Defender for the CloudRedirect folder.<br>2. Or compile from GitHub source if you want to verify.<br>3. Temporarily disable real-time protection during setup.<br>4. Virustotal shows only 1 unknown AV flag — normal for PyInstaller.<br><br><strong>It\'s completely safe. Just add an exclusion.</strong>',
 
-  saves_gone: '1. Check <code>C:\\Program Files (x86)\\Steam\\userdata\\&lt;yourid&gt;\\&lt;appid&gt;\\</code> for remaining save data.<br>2. Some games store saves in <strong>Documents</strong> or <strong>AppData</strong> too.<br>3. Steam keeps backups in <code>Steam\\userdata\\&lt;yourid&gt;\\&lt;appid&gt;\\remote\\</code>.<br>4. Copy saves to <strong>both</strong> the Steam userdata folder AND the game\'s local save location.<br>5. Use <strong>Ludusavi</strong> (free save backup tool) to prevent this.',
+  av_dll: '<strong>Yes, it\'s safe.</strong> Crack .dll files trigger AV because of how they work.<br><br>1. Add exclusion for the game\'s folder.<br>2. Only use cracks from trusted sources: <a href="https://online-fix.me/" target="_blank">online-fix.me</a> or <a href="https://discord.com/channels/1327856038967246970/1369722589471182920" target="_blank">#game-fixes</a>.<br><br><strong>Standard cracks flagging is normal and safe.</strong>',
 
-  saves_achievements: '1. Game updates can reset achievement tracking. Check that <strong>usergamestats</strong> and <strong>usergamestatschema</strong> files still exist in userdata.<br>2. Run <strong>CloudRedirect</strong> before launching — helps Steam recognize data.<br>3. Achievement tracking depends on the Steam client — make sure Steam is working.<br>4. If files are gone, they may be irrecoverable without a backup.',
+  av_other: '<strong>Yes, it\'s almost certainly safe.</strong> Community tools are open-source and vetted.<br><br>1. If in the official Hubcap releases channel — it\'s vetted.<br>2. Virustotal: 1-2 flags = normal, 5+ = suspicious.<br>3. When in doubt, ask in support.<br><br><strong>Don\'t worry. Community tools are trusted and well-tested.</strong>',
 
-  saves_recognize: '1. Make sure saves are in the <strong>correct folder</strong> — each game is different (check PCGamingWiki).<br>2. Copy them to both the Steam userdata folder AND the game\'s Documents/AppData folder.<br>3. Some games tie saves to your Steam ID — cracked versions may use a different ID. Try matching the Steam ID in the cracked save path.',
+  /* ── DLC ────────────────────────── */
+  dlc_locked: '1. Get the <strong>latest .lua file</strong> — old ones may not include DLC.<br>2. DLC content is in LUA manifests — no separate file for most games.<br>3. Some games need <strong>CreamAPI</strong> — check <a href="https://discord.com/channels/1327856038967246970/1369722589471182920" target="_blank">#game-fixes</a>.<br>4. Run <strong>CloudRedirect</strong> — helps DLC recognition.<br>5. Regenerate: <code>/gen &lt;appid&gt;</code>.',
+
+  dlc_update: 'Game updates break DLC.<br><br>1. Get a <strong>fresh .lua file</strong> for the updated version.<br>2. Delete old .lua from <code>stplug-in</code> and replace it.<br>3. Check <a href="https://discord.com/channels/1327856038967246970/1369722589471182920" target="_blank">#game-fixes</a> for updated fixes.<br>4. Restart Steam.',
+
+  dlc_specific: 'Search <a href="https://discord.com/channels/1327856038967246970/1369722589471182920" target="_blank">#game-fixes</a> for your game name.<br><br>Popular games have dedicated threads with specific DLC workarounds.<br>Payday 2 uses a different DLC system — check its specific guide.',
+
+  dlc_request: 'Missing DLC should be requested in:<br>⇒ <a href="https://discord.com/channels/1327856038967246970/1369722796237918409" target="_blank">#dlc-fixes</a><br><br><strong>Make sure to read the posting guidelines before posting.</strong><br>Be patient — getting your game/DLC may take time.',
+
+  /* ── MULTIPLAYER ─────────────────── */
+  multi_coop: '1. Download the <strong>online fix</strong> from <a href="https://online-fix.me/" target="_blank">online-fix.me</a> for your game.<br>2. You can <strong>only play with other online-fix users</strong> — not legit Steam owners.<br>3. Copy ALL files from the fix, not just the .exe.<br>4. Some games need Epic Games login via the fix.',
+
+  multi_servers: '1. Cracked games cannot reach official servers — normal.<br>2. For LAN: use <strong>Radmin VPN</strong> or <strong>Hamachi</strong>.<br>3. Check <a href="https://online-fix.me/" target="_blank">online-fix.me</a> — custom servers for many games.<br>4. Open-source options: Goldberg emulator, Unsteam.',
+
+  multi_update: 'Game updates break online fixes.<br><br>1. Check <a href="https://online-fix.me/" target="_blank">online-fix.me</a> for updated fix.<br>2. You may need to <strong>downgrade</strong> your game (check #game-fixes).<br>3. <strong>Disable auto-updates</strong> for that game in Steam.',
+
+  multi_howto: '<strong>How to play online:</strong><br><br>• <a href="https://online-fix.me/" target="_blank">online-fix.me</a> — trusted fixes, especially for games with third-party auth (Photon, PlayFab, GC)<br>• <a href="https://cs.rin.ru/forum/viewtopic.php?f=29&t=134707" target="_blank">Unsteam</a> — generic Steamworks fix for most Steamworks-only games<br>• <a href="https://github.com/Detanup01/gbe_fork" target="_blank">GBE fork</a> — full LAN support for Steamworks games',
+
+  /* ── SAVES ──────────────────────── */
+  saves_gone: '1. Check <code>C:\\Program Files (x86)\\Steam\\userdata\\&lt;yourid&gt;\\&lt;appid&gt;\\</code>.<br>2. Some games store saves in <strong>Documents</strong> or <strong>AppData</strong>.<br>3. Steam cloud backups: <code>Steam\\userdata\\&lt;yourid&gt;\\&lt;appid&gt;\\remote\\</code>.<br>4. Copy saves to both Steam userdata AND game\'s local save location.<br>5. Use <strong>Ludusavi</strong> (free save backup tool).',
+
+  saves_achievements: '1. Check that <strong>usergamestats</strong> and <strong>usergamestatschema</strong> still exist in userdata folder.<br>2. Run <strong>CloudRedirect</strong> before launching — helps Steam recognize data.<br>3. If files are gone, they may be irrecoverable without a backup.',
+
+  saves_recognize: '1. Make sure saves are in the <strong>correct folder</strong> — check PCGamingWiki for each game.<br>2. Copy to both Steam userdata AND game\'s Documents/AppData folder.<br>3. Cracked versions may use a different Steam ID — try matching the ID in the save path.',
 };
 
 /* ── Farmer & KFC story ────────────────────────────── */
@@ -366,7 +399,6 @@ function showStory(resultArea) {
   let linesHtml = kfcStory.map((line, i) =>
     `<div class="story-line" style="animation:storyIn 0.5s ${0.6 + i * 0.4}s forwards">${line}</div>`
   ).join('');
-
   resultArea.innerHTML = `
     <div class="story-container">
       <div class="story-title">The Farmer and the KFC</div>
@@ -398,7 +430,6 @@ function render() {
     pendingSpecial = null;
     return;
   }
-
   if (pendingSpecial === 'story') {
     stepLabel.textContent = 'A tale as old as time...';
     questionArea.classList.add('hidden');
@@ -407,7 +438,6 @@ function render() {
     pendingSpecial = null;
     return;
   }
-
   if (pendingAnswerKey) {
     stepLabel.textContent = 'Here\'s your answer';
     questionArea.classList.add('hidden');
@@ -420,20 +450,17 @@ function render() {
   stepLabel.textContent = node.id === 'start' ? 'Pick your situation from the list below' : 'Choose the option that matches';
   questionArea.classList.remove('hidden');
   resultArea.classList.add('hidden');
-
   updateBreadcrumb();
 
   let html = `<div class="question-label">${node.label}</div>`;
   html += '<div class="options">';
   node.options.forEach((opt, i) => {
-    html += `<button class="option-btn" data-idx="${i}" onclick="handleClick(${i})">${opt.text}</button>`;
+    html += `<button class="option-btn" onclick="handleClick(${i})">${opt.text}</button>`;
   });
   html += '</div>';
-
   if (history.length > 0) {
     html += '<button class="btn btn-back" onclick="goBack()">← Back</button>';
   }
-
   questionArea.innerHTML = html;
 }
 
@@ -443,9 +470,9 @@ function handleClick(optIdx) {
     history.push(currentNode);
   }
   if (opt.end) {
-    if (opt.end === 'rickroll') { pendingSpecial = 'rickroll'; }
-    else if (opt.end === 'story') { pendingSpecial = 'story'; }
-    else { pendingAnswerKey = opt.end; }
+    if (opt.end === 'rickroll') pendingSpecial = 'rickroll';
+    else if (opt.end === 'story') pendingSpecial = 'story';
+    else pendingAnswerKey = opt.end;
   } else if (faq[opt.next]) {
     currentNode = opt.next;
   }
