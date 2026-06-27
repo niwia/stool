@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Quick Questionnaire</title>
+<title>Stool FAQ</title>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -41,20 +41,19 @@ h1 {
   margin-bottom: 24px;
 }
 
-.progress-bar {
-  height: 4px;
-  background: #e0e0e0;
-  border-radius: 2px;
-  margin-bottom: 28px;
-  overflow: hidden;
+.breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 20px;
+  font-size: 13px;
+  color: #999;
 }
 
-.progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #667eea, #764ba2);
-  border-radius: 2px;
-  transition: width 0.4s ease;
-}
+.breadcrumb span { cursor: pointer; color: #667eea; }
+.breadcrumb span:hover { text-decoration: underline; }
+.breadcrumb .sep { cursor: default; color: #ccc; text-decoration: none; }
+.breadcrumb .sep:hover { text-decoration: none; }
 
 .question-label {
   font-size: 18px;
@@ -88,11 +87,9 @@ h1 {
   background: #f8f9ff;
 }
 
-.option-btn.selected {
-  border-color: #667eea;
-  background: #667eea;
-  color: #fff;
-  font-weight: 500;
+.option-btn.sub-option {
+  margin-left: 16px;
+  border-left: 3px solid #667eea;
 }
 
 .input-group {
@@ -109,15 +106,7 @@ h1 {
   font-family: inherit;
 }
 
-.text-input:focus {
-  outline: none;
-  border-color: #667eea;
-}
-
-.btn-row {
-  display: flex;
-  gap: 12px;
-}
+.text-input:focus { outline: none; border-color: #667eea; }
 
 .btn {
   padding: 12px 24px;
@@ -133,18 +122,17 @@ h1 {
 .btn-primary {
   background: linear-gradient(135deg, #667eea, #764ba2);
   color: #fff;
-  flex: 1;
+  width: 100%;
 }
 
 .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
 .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
-.btn-secondary {
-  background: #f0f0f0;
-  color: #555;
+.btn-restart {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: #fff;
+  margin-top: 16px;
 }
-
-.btn-secondary:hover { background: #e0e0e0; }
 
 .result-card {
   text-align: center;
@@ -163,141 +151,296 @@ h1 {
   margin-bottom: 20px;
 }
 
-.btn-restart {
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  color: #fff;
+.btn-back {
+  background: #f0f0f0;
+  color: #555;
+  margin-top: 10px;
 }
+
+.btn-back:hover { background: #e0e0e0; }
 
 .hidden { display: none !important; }
 </style>
 </head>
 <body>
 <div class="container" id="app">
-  <h1>Quick Questionnaire</h1>
-  <p class="subtitle" id="stepLabel">Question 1 of 5</p>
-  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width: 0%"></div></div>
-
+  <h1>Stool FAQ</h1>
+  <p class="subtitle" id="stepLabel"></p>
+  <div id="breadcrumb" class="breadcrumb"></div>
   <div id="questionArea"></div>
   <div id="resultArea" class="hidden"></div>
 </div>
 
 <script>
-const questions = [
-  {
-    id: 'interest',
-    label: "What brings you here today?",
-    type: 'choice',
-    options: ['Learning something new', 'Solving a problem', 'Just browsing', 'Getting advice'],
+const faq = {
+  start: {
+    id: 'start',
+    label: 'What can I help you with?',
+    options: [
+      { text: 'General info', next: 'general' },
+      { text: 'Account help', next: 'account' },
+      { text: 'Billing question', next: 'billing' },
+      { text: 'Technical support', next: 'tech' },
+    ],
   },
-  {
-    id: 'topic',
-    label: "Which topic interests you most?",
-    type: 'choice',
-    options: ['Technology', 'Health & Wellness', 'Business & Finance', 'Creative Arts'],
-  },
-  {
-    id: 'experience',
-    label: "How would you rate your experience in this area?",
-    type: 'choice',
-    options: ['Beginner', 'Intermediate', 'Advanced'],
-  },
-  {
-    id: 'goal',
-    label: "What's your main goal?",
-    type: 'choice',
-    options: ['Personal growth', 'Career advancement', 'Hobby / Fun', 'Not sure yet'],
-  },
-  {
-    id: 'time',
-    label: "How much time can you dedicate per week?",
-    type: 'choice',
-    options: ['Less than 2 hours', '2-5 hours', '5-10 hours', '10+ hours'],
-  },
-  {
-    id: 'name',
-    label: "What should we call you? (optional)",
-    type: 'text',
-  },
-];
 
-let currentStep = 0;
-const answers = {};
+  general: {
+    id: 'general',
+    label: 'What would you like to know?',
+    options: [
+      { text: 'What is this service?', next: 'about' },
+      { text: 'How do I get started?', next: 'getstarted' },
+      { text: 'Is there a free tier?', next: 'pricing' },
+    ],
+  },
+
+  about: {
+    id: 'about',
+    label: 'Are you a new user or existing customer?',
+    options: [
+      { text: 'New user', end: true, answer: "Stool is a simple tool that helps you find answers fast. It's designed to be lightweight, free, and easy to use. To get started, just keep exploring the FAQ or head over to the getting started section!" },
+      { text: 'Existing customer', end: true, answer: "You already know the basics! Check the account or technical support sections for advanced help. If you need something specific, restart and pick a different path." },
+    ],
+  },
+
+  getstarted: {
+    id: 'getstarted',
+    label: 'What kind of device are you using?',
+    options: [
+      { text: 'Desktop / Laptop', end: true, answer: 'Getting started is easy! Just open your browser and navigate to our homepage. Create a free account with your email, verify it, and you\'re ready to go. No downloads needed for desktop.' },
+      { text: 'Mobile / Tablet', end: true, answer: 'Download our app from the App Store or Google Play, or just use the mobile web version. Sign up with your email and you\'re all set in under a minute!' },
+    ],
+  },
+
+  pricing: {
+    id: 'pricing',
+    label: 'What\'s your budget or use case?',
+    options: [
+      { text: 'Personal / hobby use', end: true, answer: 'Yes, there\'s a generous free tier! It includes all core features with reasonable usage limits. Perfect for personal projects and learning.' },
+      { text: 'Business / team use', end: true, answer: 'There\'s a free trial, and paid plans start at $12/month per user. Team plans include admin controls, priority support, and higher limits. Contact sales for enterprise pricing.' },
+    ],
+  },
+
+  account: {
+    id: 'account',
+    label: 'What account issue are you having?',
+    options: [
+      { text: 'Can\'t log in', next: 'login' },
+      { text: 'Reset password', next: 'resetpw' },
+      { text: 'Delete my account', next: 'delete' },
+    ],
+  },
+
+  login: {
+    id: 'login',
+    label: 'What happens when you try to log in?',
+    options: [
+      { text: 'Wrong password error', end: true, answer: 'Use the "Forgot password" link on the login page. You\'ll get an email with a reset link. Check spam if you don\'t see it within 5 minutes.' },
+      { text: 'Account not found', end: true, answer: 'Double-check the email address you\'re using. If you signed up with Google or Apple SSO, use that button instead of email login.' },
+      { text: '2FA code not working', end: true, answer: 'Make sure your device clock is synced. If you lost your 2FA device, use one of your backup codes. No backup codes? Contact support with proof of identity.' },
+    ],
+  },
+
+  resetpw: {
+    id: 'resetpw',
+    label: 'Have you received the reset email?',
+    options: [
+      { text: 'Yes, but link is expired', end: true, answer: 'Reset links expire after 1 hour for security. Just request a new one from the login page. The old link will be invalidated automatically.' },
+      { text: 'No, didn\'t get the email', end: true, answer: 'Check your spam/junk folder first. Still nothing? Make sure you\'re checking the right email — the one you registered with. If it\'s been over 10 minutes, try requesting again.' },
+    ],
+  },
+
+  delete: {
+    id: 'delete',
+    label: 'Are you sure you want to delete your account?',
+    options: [
+      { text: 'Yes, delete permanently', end: true, answer: 'Go to Settings → Account → Delete Account. You\'ll need to confirm with your password. Data is permanently removed after a 30-day grace period. You can cancel during that window by logging in.' },
+      { text: 'Just deactivate temporarily', end: true, answer: 'You can deactivate from Settings → Account → Deactivate. Your data is preserved and you can reactivate anytime by logging back in. Billing pauses during deactivation.' },
+    ],
+  },
+
+  billing: {
+    id: 'billing',
+    label: 'What billing issue do you have?',
+    options: [
+      { text: 'Unexpected charge', next: 'charge' },
+      { text: 'Update payment method', next: 'payment' },
+      { text: 'Cancel subscription', next: 'cancel' },
+      { text: 'Request refund', next: 'refund' },
+    ],
+  },
+
+  charge: {
+    id: 'charge',
+    label: 'When did the charge occur?',
+    options: [
+      { text: 'This month', end: true, answer: 'Check your Billing → Invoice History for a breakdown. Charges happen on the same date each month. If it doesn\'t match your plan, take a screenshot and contact support — we fix billing errors within 24 hours.' },
+      { text: 'After I canceled', end: true, answer: 'If you canceled mid-cycle, you may still be charged for the current billing period. Check your cancellation confirmation email for the exact end date. If charged after that date, contact support immediately for a refund.' },
+    ],
+  },
+
+  payment: {
+    id: 'payment',
+    label: 'What payment method do you use?',
+    options: [
+      { text: 'Credit / Debit card', end: true, answer: 'Go to Billing → Payment Methods → Update Card. Enter your new card details. Your next charge will use the new card. Old card info is removed immediately.' },
+      { text: 'PayPal', end: true, answer: 'PayPal management happens on PayPal\'s side. Go to Billing → Payment Methods → Manage PayPal to be redirected. Update your funding source in PayPal, then it syncs automatically.' },
+    ],
+  },
+
+  cancel: {
+    id: 'cancel',
+    label: 'Why are you canceling?',
+    options: [
+      { text: 'Too expensive', end: true, answer: 'Before you cancel — we have a lower-cost plan at half the price with most core features. Check it out at Settings → Plans. If it still doesn\'t work, cancel anytime with no fees.' },
+      { text: 'Don\'t need it anymore', end: true, answer: 'No worries! Go to Billing → Cancel Subscription. You\'ll keep access until the end of your billing period. No cancellation fees, and you can resubscribe anytime.' },
+      { text: 'Found an alternative', end: true, answer: 'Go to Billing → Cancel Subscription to cancel. We\'d love to hear what we could do better — there\'s an optional feedback form after cancellation.' },
+    ],
+  },
+
+  refund: {
+    id: 'refund',
+    label: 'How long ago was the charge?',
+    options: [
+      { text: 'Less than 7 days', end: true, answer: 'You\'re within our refund window! Go to Billing → Request Refund and it\'ll be processed within 3-5 business days. No questions asked.' },
+      { text: 'More than 7 days', end: true, answer: 'Our standard refund window is 7 days, but we review cases individually. Contact support via Billing → Request Refund and explain the situation — we try to be fair.' },
+    ],
+  },
+
+  tech: {
+    id: 'tech',
+    label: 'What kind of technical issue?',
+    options: [
+      { text: 'Something is broken / bug', next: 'bug' },
+      { text: 'Integration / API help', next: 'api' },
+      { text: 'Performance / slow', next: 'perf' },
+    ],
+  },
+
+  bug: {
+    id: 'bug',
+    label: 'Where is the issue happening?',
+    options: [
+      { text: 'Web app / browser', end: true, answer: 'Try clearing your browser cache and disabling extensions first — they\'re the cause 80% of the time. Still broken? Send a bug report with your browser version, what you clicked, and a screenshot to support.' },
+      { text: 'Mobile app', end: true, answer: 'Make sure your app is updated to the latest version. Try uninstalling and reinstalling. If the bug persists, send a report from Settings → Report a Bug (it auto-attaches device info).' },
+    ],
+  },
+
+  api: {
+    id: 'api',
+    label: 'What API issue are you facing?',
+    options: [
+      { text: 'Authentication errors (401)', end: true, answer: 'Your API key may be expired or invalid. Generate a new key from Settings → API Keys. Make sure you\'re sending it as a Bearer token in the Authorization header. Keys expire after 90 days by default.' },
+      { text: 'Rate limiting (429)', end: true, answer: 'Free tier is limited to 100 requests/minute. Upgrade for higher limits. Check the Retry-After header in the response for when you can resume. Implement exponential backoff in your client.' },
+      { text: 'Need documentation', end: true, answer: 'Full API docs are at docs.example.com/api. Quick start guides, SDK examples, and a Postman collection are all there. Join our developer Discord for real-time help.' },
+    ],
+  },
+
+  perf: {
+    id: 'perf',
+    label: 'What feels slow?',
+    options: [
+      { text: 'Page loads', end: true, answer: 'Check your internet connection first. If it\'s fine, we may be experiencing high traffic. Check our status page at status.example.com. The dashboard and reports are the heaviest pages — try during off-peak hours.' },
+      { text: 'Data syncing', end: true, answer: 'Initial sync can be slow for large accounts. Let it complete in the background. Subsequent syncs are incremental and much faster. If sync is stuck, log out and back in to restart it.' },
+    ],
+  },
+};
+
+const history = [];
+let currentNode = 'start';
+let pendingAnswer = null;
 
 function render() {
-  const total = questions.length;
+  const node = faq[currentNode];
   const stepLabel = document.getElementById('stepLabel');
-  const progressFill = document.getElementById('progressFill');
   const questionArea = document.getElementById('questionArea');
   const resultArea = document.getElementById('resultArea');
+  const breadcrumb = document.getElementById('breadcrumb');
 
-  if (currentStep >= total) {
-    stepLabel.textContent = 'Done!';
-    progressFill.style.width = '100%';
-    questionArea.classList.add('hidden');
-    resultArea.classList.remove('hidden');
-    showResults();
+  if (pendingAnswer) {
+    showResult(pendingAnswer);
+    pendingAnswer = null;
     return;
   }
 
-  const q = questions[currentStep];
-  stepLabel.textContent = `Question ${currentStep + 1} of ${total}`;
-  progressFill.style.width = ((currentStep / total) * 100) + '%';
+  stepLabel.textContent = node.id === 'start' ? 'Choose a category to begin' : 'Select an option';
   questionArea.classList.remove('hidden');
   resultArea.classList.add('hidden');
 
-  let html = `<div class="question-label">${q.label}</div>`;
+  updateBreadcrumb();
 
-  if (q.type === 'choice') {
-    html += '<div class="options">';
-    q.options.forEach(opt => {
-      const sel = answers[q.id] === opt ? ' selected' : '';
-      html += `<button class="option-btn${sel}" onclick="selectOption('${q.id}', '${opt}')">${opt}</button>`;
-    });
-    html += '</div>';
-  } else {
-    html += `<div class="input-group"><input class="text-input" id="textInput" placeholder="Type your answer..." value="${answers[q.id] || ''}" oninput="answers['${q.id}'] = this.value"></div>`;
-  }
-
-  html += '<div class="btn-row">';
-  if (currentStep > 0) {
-    html += '<button class="btn btn-secondary" onclick="prevStep()">Back</button>';
-  }
-  html += `<button class="btn btn-primary" onclick="nextStep()" ${!answers[q.id] ? 'disabled' : ''}>${currentStep === total - 1 ? 'Finish' : 'Next'}</button>`;
+  let html = `<div class="question-label">${node.label}</div>`;
+  html += '<div class="options">';
+  node.options.forEach((opt, i) => {
+    html += `<button class="option-btn" onclick="choose('${opt.next || ''}', '${encodeURIComponent(opt.answer || '')}', ${!!opt.end})">${opt.text}</button>`;
+  });
   html += '</div>';
+
+  if (history.length > 0) {
+    html += '<button class="btn btn-back" onclick="goBack()">← Back</button>';
+  }
 
   questionArea.innerHTML = html;
 }
 
-function selectOption(qId, value) {
-  answers[qId] = value;
+function choose(nextId, answerEnc, isEnd) {
+  if (history.length === 0 || history[history.length - 1] !== currentNode) {
+    history.push(currentNode);
+  }
+
+  if (isEnd) {
+    pendingAnswer = decodeURIComponent(answerEnc);
+  } else if (faq[nextId]) {
+    currentNode = nextId;
+  }
   render();
 }
 
-function nextStep() {
-  if (!answers[questions[currentStep].id]) return;
-  currentStep++;
+function goBack() {
+  if (history.length === 0) return;
+  currentNode = history.pop();
+  pendingAnswer = null;
   render();
 }
 
-function prevStep() {
-  if (currentStep > 0) currentStep--;
+function updateBreadcrumb() {
+  const breadcrumb = document.getElementById('breadcrumb');
+  const items = [...history.map(id => ({ id, label: faq[id].label })), { id: currentNode, label: faq[currentNode].label }];
+
+  breadcrumb.innerHTML = items.map((item, i) => {
+    const sep = i < items.length - 1 ? '<span class="sep"> › </span>' : '';
+    return `<span onclick="jumpTo('${item.id}', ${i})">${item.label}</span>${sep}`;
+  }).join('');
+}
+
+function jumpTo(nodeId, idx) {
+  history.splice(idx);
+  currentNode = nodeId;
+  pendingAnswer = null;
   render();
 }
 
-function showResults() {
+function showResult(answer) {
+  const questionArea = document.getElementById('questionArea');
   const resultArea = document.getElementById('resultArea');
+  const stepLabel = document.getElementById('stepLabel');
+
+  stepLabel.textContent = 'Here\'s your answer';
+  questionArea.classList.add('hidden');
+  resultArea.classList.remove('hidden');
+
   resultArea.innerHTML = `
     <div class="result-card">
-      <h2>${answers.name ? 'Thanks, ' + answers.name + '!' : 'All done!'}</h2>
-      <p>Based on your answers, you're interested in <strong>${answers.topic}</strong> as a <strong>${answers.experience}</strong> for <strong>${answers.goal}</strong>.<br>You came here <strong>${answers.interest?.toLowerCase()}</strong> and can dedicate <strong>${answers.time?.toLowerCase()}</strong> per week.</p>
-      <button class="btn btn-restart" onclick="restart()">Start Over</button>
+      <p>${answer}</p>
+      <button class="btn btn-primary" onclick="restart()">Ask Another Question</button>
     </div>
   `;
 }
 
 function restart() {
-  currentStep = 0;
-  for (const k in answers) delete answers[k];
+  history.length = 0;
+  currentNode = 'start';
+  pendingAnswer = null;
   render();
 }
 
