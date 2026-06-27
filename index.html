@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quick Questionnaire</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.container {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  padding: 40px;
+  max-width: 560px;
+  width: 100%;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+h1 {
+  font-size: 24px;
+  color: #1a1a2e;
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 24px;
+}
+
+.progress-bar {
+  height: 4px;
+  background: #e0e0e0;
+  border-radius: 2px;
+  margin-bottom: 28px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #667eea, #764ba2);
+  border-radius: 2px;
+  transition: width 0.4s ease;
+}
+
+.question-label {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1a1a2e;
+  margin-bottom: 20px;
+  line-height: 1.4;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.option-btn {
+  padding: 14px 18px;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  background: #fff;
+  cursor: pointer;
+  font-size: 15px;
+  text-align: left;
+  transition: all 0.15s ease;
+  color: #333;
+}
+
+.option-btn:hover {
+  border-color: #667eea;
+  background: #f8f9ff;
+}
+
+.option-btn.selected {
+  border-color: #667eea;
+  background: #667eea;
+  color: #fff;
+  font-weight: 500;
+}
+
+.input-group {
+  margin-bottom: 24px;
+}
+
+.text-input {
+  width: 100%;
+  padding: 14px 18px;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  font-size: 15px;
+  transition: border-color 0.15s ease;
+  font-family: inherit;
+}
+
+.text-input:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+.btn-row {
+  display: flex;
+  gap: 12px;
+}
+
+.btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: inherit;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: #fff;
+  flex: 1;
+}
+
+.btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+.btn-secondary {
+  background: #f0f0f0;
+  color: #555;
+}
+
+.btn-secondary:hover { background: #e0e0e0; }
+
+.result-card {
+  text-align: center;
+  padding: 20px 0;
+}
+
+.result-card h2 {
+  font-size: 22px;
+  color: #1a1a2e;
+  margin-bottom: 12px;
+}
+
+.result-card p {
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.btn-restart {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: #fff;
+}
+
+.hidden { display: none !important; }
+</style>
+</head>
+<body>
+<div class="container" id="app">
+  <h1>Quick Questionnaire</h1>
+  <p class="subtitle" id="stepLabel">Question 1 of 5</p>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width: 0%"></div></div>
+
+  <div id="questionArea"></div>
+  <div id="resultArea" class="hidden"></div>
+</div>
+
+<script>
+const questions = [
+  {
+    id: 'interest',
+    label: "What brings you here today?",
+    type: 'choice',
+    options: ['Learning something new', 'Solving a problem', 'Just browsing', 'Getting advice'],
+  },
+  {
+    id: 'topic',
+    label: "Which topic interests you most?",
+    type: 'choice',
+    options: ['Technology', 'Health & Wellness', 'Business & Finance', 'Creative Arts'],
+  },
+  {
+    id: 'experience',
+    label: "How would you rate your experience in this area?",
+    type: 'choice',
+    options: ['Beginner', 'Intermediate', 'Advanced'],
+  },
+  {
+    id: 'goal',
+    label: "What's your main goal?",
+    type: 'choice',
+    options: ['Personal growth', 'Career advancement', 'Hobby / Fun', 'Not sure yet'],
+  },
+  {
+    id: 'time',
+    label: "How much time can you dedicate per week?",
+    type: 'choice',
+    options: ['Less than 2 hours', '2-5 hours', '5-10 hours', '10+ hours'],
+  },
+  {
+    id: 'name',
+    label: "What should we call you? (optional)",
+    type: 'text',
+  },
+];
+
+let currentStep = 0;
+const answers = {};
+
+function render() {
+  const total = questions.length;
+  const stepLabel = document.getElementById('stepLabel');
+  const progressFill = document.getElementById('progressFill');
+  const questionArea = document.getElementById('questionArea');
+  const resultArea = document.getElementById('resultArea');
+
+  if (currentStep >= total) {
+    stepLabel.textContent = 'Done!';
+    progressFill.style.width = '100%';
+    questionArea.classList.add('hidden');
+    resultArea.classList.remove('hidden');
+    showResults();
+    return;
+  }
+
+  const q = questions[currentStep];
+  stepLabel.textContent = `Question ${currentStep + 1} of ${total}`;
+  progressFill.style.width = ((currentStep / total) * 100) + '%';
+  questionArea.classList.remove('hidden');
+  resultArea.classList.add('hidden');
+
+  let html = `<div class="question-label">${q.label}</div>`;
+
+  if (q.type === 'choice') {
+    html += '<div class="options">';
+    q.options.forEach(opt => {
+      const sel = answers[q.id] === opt ? ' selected' : '';
+      html += `<button class="option-btn${sel}" onclick="selectOption('${q.id}', '${opt}')">${opt}</button>`;
+    });
+    html += '</div>';
+  } else {
+    html += `<div class="input-group"><input class="text-input" id="textInput" placeholder="Type your answer..." value="${answers[q.id] || ''}" oninput="answers['${q.id}'] = this.value"></div>`;
+  }
+
+  html += '<div class="btn-row">';
+  if (currentStep > 0) {
+    html += '<button class="btn btn-secondary" onclick="prevStep()">Back</button>';
+  }
+  html += `<button class="btn btn-primary" onclick="nextStep()" ${!answers[q.id] ? 'disabled' : ''}>${currentStep === total - 1 ? 'Finish' : 'Next'}</button>`;
+  html += '</div>';
+
+  questionArea.innerHTML = html;
+}
+
+function selectOption(qId, value) {
+  answers[qId] = value;
+  render();
+}
+
+function nextStep() {
+  if (!answers[questions[currentStep].id]) return;
+  currentStep++;
+  render();
+}
+
+function prevStep() {
+  if (currentStep > 0) currentStep--;
+  render();
+}
+
+function showResults() {
+  const resultArea = document.getElementById('resultArea');
+  resultArea.innerHTML = `
+    <div class="result-card">
+      <h2>${answers.name ? 'Thanks, ' + answers.name + '!' : 'All done!'}</h2>
+      <p>Based on your answers, you're interested in <strong>${answers.topic}</strong> as a <strong>${answers.experience}</strong> for <strong>${answers.goal}</strong>.<br>You came here <strong>${answers.interest?.toLowerCase()}</strong> and can dedicate <strong>${answers.time?.toLowerCase()}</strong> per week.</p>
+      <button class="btn btn-restart" onclick="restart()">Start Over</button>
+    </div>
+  `;
+}
+
+function restart() {
+  currentStep = 0;
+  for (const k in answers) delete answers[k];
+  render();
+}
+
+render();
+</script>
+</body>
+</html>
