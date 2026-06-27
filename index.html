@@ -60,6 +60,7 @@ h1 { font-size: 22px; color: #1a1a2e; margin-bottom: 4px; }
 .result-card .answer-text {
   background: #f8f9ff; border-left: 3px solid #667eea;
   padding: 14px 16px; border-radius: 6px; margin-bottom: 16px;
+  font-size: 14px; line-height: 1.8;
 }
 .result-card a { color: #667eea; word-break: break-all; }
 
@@ -68,6 +69,56 @@ h1 { font-size: 22px; color: #1a1a2e; margin-bottom: 4px; }
 }
 .btn-restart:hover { opacity: 0.9; transform: translateY(-1px); }
 .hidden { display: none !important; }
+
+/* ── Rickroll embed ────────────────────────── */
+.rickroll-wrap {
+  position: relative; width: 100%; padding-bottom: 56.25%; margin-bottom: 16px; border-radius: 8px; overflow: hidden;
+}
+.rickroll-wrap iframe {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;
+}
+
+/* ── Dramatic story reveal ─────────────────── */
+.story-container {
+  text-align: center; padding: 10px 0;
+}
+.story-title {
+  font-size: 18px; font-weight: 700; color: #1a1a2e; margin-bottom: 16px;
+  opacity: 0; animation: storyFadeIn 0.5s 0.2s forwards;
+}
+.story-text {
+  font-size: 14px; line-height: 2; color: #444; text-align: left;
+  max-width: 460px; margin: 0 auto;
+}
+.story-line {
+  opacity: 0; animation: storyFadeIn 0.4s forwards;
+}
+.story-line:nth-child(1)  { animation-delay: 0.6s; }
+.story-line:nth-child(2)  { animation-delay: 1.1s; }
+.story-line:nth-child(3)  { animation-delay: 1.6s; }
+.story-line:nth-child(4)  { animation-delay: 2.1s; }
+.story-line:nth-child(5)  { animation-delay: 2.6s; }
+.story-line:nth-child(6)  { animation-delay: 3.1s; }
+.story-line:nth-child(7)  { animation-delay: 3.6s; }
+.story-line:nth-child(8)  { animation-delay: 4.1s; }
+.story-line:nth-child(9)  { animation-delay: 4.6s; }
+.story-line:nth-child(10) { animation-delay: 5.1s; }
+.story-line:nth-child(11) { animation-delay: 5.6s; }
+.story-line:nth-child(12) { animation-delay: 6.1s; }
+.story-line:nth-child(13) { animation-delay: 6.6s; }
+.story-line:nth-child(14) { animation-delay: 7.1s; }
+.story-line:nth-child(15) { animation-delay: 7.6s; }
+.story-line:nth-child(16) { animation-delay: 8.1s; }
+.story-line:nth-child(17) { animation-delay: 8.6s; }
+.story-line:nth-child(18) { animation-delay: 9.1s; }
+.story-line:nth-child(19) { animation-delay: 9.6s; }
+.story-line:nth-child(20) { animation-delay: 10.1s; }
+
+.story-btn-wrap {
+  opacity: 0; animation: storyFadeIn 0.4s 11s forwards;
+}
+
+@keyframes storyFadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 </style>
 </head>
 <body>
@@ -82,7 +133,6 @@ h1 { font-size: 22px; color: #1a1a2e; margin-bottom: 4px; }
 <script>
 const faq = {
 
-  /* ── ROOT: OS ─────────────────────────────────────── */
   start: {
     id: 'start', label: 'What operating system are you using?',
     options: [
@@ -93,16 +143,14 @@ const faq = {
     ],
   },
 
-  /* ── WINDOWS: Games or Tools? ─────────────────────── */
   win_games_or_tools: {
     id: 'win_games_or_tools', label: 'Do you need help with games or with Steam-related tools?',
     options: [
-      { text: 'Games (game won\'t launch, crashes, DRM, etc.)', end: true, answer: 'Game issues should be checked in <strong>#game-fixes</strong> first — that\'s where specific game fixes, cracks, and workarounds are posted.<br><br>⇒ Head to <a href="https://discord.com/channels/1327856038967246970/1462391493942579240" target="_blank">#game-fixes</a> and search for your game\'s thread.<br><br>If no fix exists for your game, it may be unplayable without buying it.' },
+      { text: 'Games (game won\'t launch, crashes, DRM, etc.)', end: true, answer: 'Game issues should be checked in <strong>#game-fixes</strong> first — that\'s where specific game fixes, cracks, and workarounds are posted.<br><br>⇒ Head to <a href="https://discord.com/channels/1327856038967246970/1369722589471182920" target="_blank">#game-fixes</a> and search for your game\'s thread.<br><br>If no fix exists for your game, it may be unplayable without buying it.' },
       { text: 'Steam-related tools (SteamTools, Hubcap, etc.)', next: 'tools' },
     ],
   },
 
-  /* ── WHICH TOOL? ──────────────────────────────────── */
   tools: {
     id: 'tools', label: 'Which tool are you using?',
     options: [
@@ -116,7 +164,6 @@ const faq = {
     ],
   },
 
-  /* ── NEWBIE ───────────────────────────────────────── */
   newbie: {
     id: 'newbie', label: 'New to this? Here\'s where to start.',
     options: [
@@ -125,16 +172,14 @@ const faq = {
     ],
   },
 
-  /* ── NON-STEAMTOOLS TOOLS ─────────────────────────── */
   othertool: {
     id: 'othertool', label: 'What do you need?',
     options: [
-      { text: 'Support for this tool', end: true, answer: 'We only provide support for <strong>SteamTools</strong> and <strong>OpenSteamTools</strong> in this server.<br><br>For Hubcap, SteamIdra, LuaTools, ACCELA, GreenLuma, or any other app — please ask in <strong>their own server or support channel</strong>. We don\'t have the information to help with third-party tools.' },
-      { text: 'Tell me the story of the farmer and KFC', end: true, answer: '<em>Coming soon — this story will be uploaded later.</em>' },
+      { text: 'Support for this tool', end: true, rickroll: true },
+      { text: 'Tell me the story of the farmer and KFC', end: true, story: true },
     ],
   },
 
-  /* ── STEAMTOOLS / OPENSTEAMTOOLS: Issue categories ── */
   steaminfo: {
     id: 'steaminfo', label: 'What issue are you having?',
     options: [
@@ -150,7 +195,6 @@ const faq = {
     ],
   },
 
-  /* ── LAUNCH ERRORS ────────────────────────────────── */
   launch: {
     id: 'launch', label: 'What error do you see?',
     options: [
@@ -164,7 +208,7 @@ const faq = {
   apploaderr: {
     id: 'apploaderr', label: 'Do you know if the game has DRM protection?',
     options: [
-      { text: 'Not sure / what\'s DRM?', end: true, answer: '<strong>Application Load Error means the game has DRM.</strong><br><br>1. First, run <strong>Steamless</strong> on the game\'s .exe — this removes SteamStub DRM.<br>2. If that doesn\'t work, the game likely has <strong>Denuvo/Themida/other DRM</strong>. Check <strong>#game-fixes</strong> for that specific game.<br>3. Some games need a crack from <strong>online-fix.me</strong> (also handles multiplayer).<br>4. If all else fails, the game may not be playable without buying it.' },
+      { text: 'Not sure / what\'s DRM?', end: true, answer: '<strong>Application Load Error means the game has DRM.</strong><br><br>1. First, run <strong>Steamless</strong> on the game\'s .exe — this removes SteamStub DRM. Latest Steamless version is buggy with some 32bit games; if you get "Index out of range" use <strong>v3.1.0.3</strong> instead.<br>2. If that doesn\'t work, the game likely has <strong>Denuvo/Themida/other DRM</strong>. Check <strong>#game-fixes</strong> for that specific game.<br>3. Some games need a crack from <strong>online-fix.me</strong>.<br>4. If all else fails, the game may not be playable without buying it.' },
       { text: 'I already ran Steamless — still broken', end: true, answer: 'If Steamless didn\'t fix it, the game has non-SteamStub DRM (Denuvo, Themida, etc.).<br><br>1. Check <strong>#game-fixes</strong> — search for your game\'s thread.<br>2. Look on <strong>online-fix.me</strong> for a crack.<br>3. Some games simply cannot be cracked. If nobody has a fix, it likely can\'t be done.' },
     ],
   },
@@ -180,21 +224,19 @@ const faq = {
   askbuy: {
     id: 'askbuy', label: 'When does it ask you to buy?',
     options: [
-      { text: 'After restarting my PC', end: true, answer: '1. <strong>Run CloudRedirect first</strong>, then launch the game — this restores the license bypass.<br>2. Set CloudRedirect to start with Windows to prevent this.<br>3. If it keeps happening, your LUA file may be outdated — regenerate it.' },
-      { text: 'Every time, even with CloudRedirect', end: true, answer: '1. Your LUA file may be for the wrong game version — regenerate it with <code>/gen &lt;appid&gt;</code>.<br>2. Some games have extra license checks CloudRedirect alone can\'t bypass — check <strong>#game-fixes</strong>.' },
+      { text: 'After restarting my PC', end: true, answer: '1. <strong>Run CloudRedirect first</strong>, then launch the game — this restores the license bypass.<br>2. Set CloudRedirect to start with Windows to prevent this.<br>3. If it keeps happening, your LUA file may be outdated — regenerate it.<br>4. If you\'re on a new Steam account, you may need to restart Steam twice.' },
+      { text: 'Every time, even with CloudRedirect', end: true, answer: '1. Your LUA file may be for the wrong game version — regenerate it with <code>/gen &lt;appid&gt;</code>.<br>2. Some games have extra license checks CloudRedirect alone can\'t bypass — check <strong>#game-fixes</strong>.<br>3. Try the alternative Steam.dll bypass (check pinned messages in support).' },
     ],
   },
 
-  /* ── NO INTERNET / NO LICENSES ────────────────────── */
   noinet: {
     id: 'noinet', label: '"No internet" / "No licenses" — how are you launching?',
     options: [
-      { text: 'Using SteamTools only (no CloudRedirect)', end: true, answer: '<strong>This is the #1 most common issue.</strong> The fix is <strong>CloudRedirect</strong>.<br><br>1. Download CloudRedirect from the Hubcap releases channel or GitHub.<br>2. Run it <strong>before</strong> launching your game — it handles the license check that SteamTools misses.<br>3. If CloudRedirect doesn\'t work, check pinned messages for the <strong>PowerShell fix command</strong>.<br>4. As a last resort: manually place manifest files in <code>Steam\\depotcache</code> before starting the download.' },
-      { text: 'I AM running CloudRedirect and still get the error', end: true, answer: '1. Make sure CloudRedirect is <strong>running in the background</strong> — check the system tray.<br>2. <strong>Update CloudRedirect</strong> to the latest version.<br>3. <strong>Restart your PC</strong> — a stuck Steam process can block it.<br>4. Alternative: copy manifest files into <code>Steam\\depotcache</code>, then start Steam.<br>5. For specific games, check <strong>#game-fixes</strong> — some need extra workarounds.' },
+      { text: 'Using SteamTools only (no CloudRedirect)', end: true, answer: '<strong>This is the #1 most common issue.</strong> The fix is <strong>CloudRedirect</strong>.<br><br><strong>NO INTERNET CONNECTION / PURCHASE FIX:</strong><br>1. Download CloudRedirect from <a href="https://github.com/Selectively11/CloudRedirect/releases/" target="_blank">github.com/Selectively11/CloudRedirect/releases</a><br>2. Open <strong>CloudRedirect.exe</strong><br>3. Go to the <strong>Setup tab</strong><br>4. Click <strong>"Run All Patches"</strong><br>5. It will close Steam — that\'s normal. Restart Steam and your game will work.<br><br>If that still doesn\'t work: check pinned messages for the PowerShell fix command, or manually place manifest files in <code>Steam\\depotcache</code> before starting the download.' },
+      { text: 'I AM running CloudRedirect and still get the error', end: true, answer: '1. Make sure CloudRedirect is <strong>running in the background</strong> — check the system tray.<br>2. <strong>Update CloudRedirect</strong> to the latest version from <a href="https://github.com/Selectively11/CloudRedirect/releases/" target="_blank">GitHub</a>.<br>3. Go to <strong>Setup tab → Run All Patches</strong> again after updating.<br>4. <strong>Restart your PC</strong> — a stuck Steam process can block it.<br>5. Alternative: copy manifest files into <code>Steam\\depotcache</code>, then start Steam.<br>6. For specific games, check <strong>#game-fixes</strong> — some need extra workarounds.' },
     ],
   },
 
-  /* ── NOT IN LIBRARY ───────────────────────────────── */
   nolibrary: {
     id: 'nolibrary', label: 'Games not in library — what have you tried?',
     options: [
@@ -203,17 +245,15 @@ const faq = {
     ],
   },
 
-  /* ── DOWNLOADS ────────────────────────────────────── */
   download: {
     id: 'download', label: 'What\'s happening with the download?',
     options: [
-      { text: 'Stuck on "queued" forever', end: true, answer: '1. Run <strong>CloudRedirect</strong> — fixes most queue issues.<br>2. Manually download manifest files and place them in <code>Steam\\depotcache\\</code> before starting Steam.<br>3. Clear Steam\'s download cache: Settings → Downloads → Clear Download Cache.<br>4. Try changing your Steam download region in settings.' },
+      { text: 'Stuck on "queued" forever', end: true, answer: '1. Run <strong>CloudRedirect</strong> — fixes most queue issues.<br>2. Manually download manifest files and place them in <code>Steam\\depotcache\\</code> before starting Steam.<br>3. Clear Steam\'s download cache: Settings → Downloads → Clear Download Cache.<br>4. Try changing your Steam download region in settings.<br>5. Downloads through SteamTools go through Steam servers directly — speed depends on your region and time of day (weekends are slower).' },
       { text: 'Starts but stops / hangs mid-way', end: true, answer: '1. Keep <strong>CloudRedirect running</strong> during the download.<br>2. Try pausing and resuming.<br>3. Check your disk space — Steam silently stops if the drive is full.<br>4. Switch download region in Steam settings.<br>5. Use <strong>DepotDownloader</strong> directly instead of Steam.' },
       { text: 'DepotDownloader doesn\'t work / white flash / no response', end: true, answer: '1. Install <strong>.NET Runtime</strong> — DepotDownloader requires it.<br>2. Right-click the .exe → <strong>Properties → Unblock</strong> (Windows security checkbox).<br>3. Check your <strong>API key has no extra quotes or spaces</strong> in the command.<br>4. Try the newer <strong>DepotDownloader Mod</strong> from the Hubcap releases channel.' },
     ],
   },
 
-  /* ── API KEY ──────────────────────────────────────── */
   apikey: {
     id: 'apikey', label: 'What\'s your API key situation?',
     options: [
@@ -223,7 +263,6 @@ const faq = {
     ],
   },
 
-  /* ── ANTIVIRUS ────────────────────────────────────── */
   av: {
     id: 'av', label: 'Which tool got flagged?',
     options: [
@@ -233,17 +272,15 @@ const faq = {
     ],
   },
 
-  /* ── DLC ──────────────────────────────────────────── */
   dlc: {
     id: 'dlc', label: 'What DLC issue?',
     options: [
-      { text: 'DLC not showing / still locked', end: true, answer: '1. Get the <strong>latest .lua file</strong> — old files may not include DLC data.<br>2. DLC content is included in the LUA manifests — no separate file for most games.<br>3. Some games need <strong>CreamAPI</strong> — check <strong>#game-fixes</strong> for your game.<br>4. Run <strong>CloudRedirect</strong> — it helps DLC recognition.<br>5. Regenerate the LUA: <code>/gen &lt;appid&gt;</code> from the bot.' },
+      { text: 'DLC not showing / still locked', end: true, answer: '1. Get the <strong>latest .lua file</strong> — old files may not include DLC data.<br>2. DLC content is included in the LUA manifests — no separate file for most games.<br>3. Some games need <strong>CreamAPI</strong> — check <strong>#game-fixes</strong> for your game. Unlike SteamTools which injects into the Steam client, CreamAPI only affects the individual game.<br>4. Run <strong>CloudRedirect</strong> — it helps DLC recognition.<br>5. Regenerate the LUA: <code>/gen &lt;appid&gt;</code> from the bot.' },
       { text: 'DLC worked before but stopped after a game update', end: true, answer: 'Game updates can break DLC unlocks.<br><br>1. Get a <strong>fresh .lua file</strong> for the updated version.<br>2. Delete the old .lua from <code>stplug-in</code> and replace it.<br>3. Check <strong>#game-fixes</strong> — someone may have posted an updated fix.<br>4. Restart Steam after replacing the file.' },
       { text: 'Specific game (Lies of P, Payday 2, Dead Cells, etc.)', end: true, answer: 'These games have known DLC workarounds.<br><br>1. Search <strong>#game-fixes</strong> for the game name.<br>2. Payday 2: DLC uses a different system — check the specific guide.<br>3. Lies of P / Dead Cells: get the latest LUA that includes DLC data.<br>4. If nothing works, post in #game-fixes with your game and version.' },
     ],
   },
 
-  /* ── MULTIPLAYER ──────────────────────────────────── */
   multiplayer: {
     id: 'multiplayer', label: 'What kind of multiplayer?',
     options: [
@@ -253,26 +290,93 @@ const faq = {
     ],
   },
 
-  /* ── SAVES & ACHIEVEMENTS ─────────────────────────── */
   saves: {
     id: 'saves', label: 'What happened to your saves?',
     options: [
-      { text: 'Saves disappeared after reinstalling', end: true, answer: '1. Check <code>C:\\Program Files (x86)\\Steam\\userdata\\&lt;yourid&gt;\\&lt;appid&gt;\\</code> for remaining save data.<br>2. Some games store saves in <strong>Documents</strong> or <strong>AppData</strong> too.<br>3. If you have a backup, copy saves to <strong>both</strong> the Steam userdata folder AND the game\'s local save location.<br>4. Use <strong>Ludusavi</strong> (free save backup tool) to prevent this in future.' },
-      { text: 'Achievements disappeared after game update', end: true, answer: '1. Game updates can reset achievement tracking. Check that the <strong>usergamestats</strong> and <strong>usergamestatschema</strong> files still exist in the userdata folder.<br>2. Run <strong>CloudRedirect</strong> before launching — it can help Steam recognize the data.<br>3. If files are gone, they may be irrecoverable without a backup.' },
-      { text: 'I have save files but the game won\'t recognize them', end: true, answer: '1. Make sure saves are in the <strong>correct folder</strong> — each game is different (check PCGamingWiki).<br>2. Copy them to both the Steam userdata folder AND the game\'s Documents/AppData folder.<br>3. Some games tie saves to your Steam ID — cracked versions may use a different ID, making old saves incompatible.' },
+      { text: 'Saves disappeared after reinstalling', end: true, answer: '1. Check <code>C:\\Program Files (x86)\\Steam\\userdata\\&lt;yourid&gt;\\&lt;appid&gt;\\</code> for remaining save data.<br>2. Some games store saves in <strong>Documents</strong> or <strong>AppData</strong> too.<br>3. Steam keeps backups in <code>Steam\\userdata\\&lt;yourid&gt;\\&lt;appid&gt;\\remote\\</code> — check there for cloud backups.<br>4. If you have a manual backup, copy saves to <strong>both</strong> the Steam userdata folder AND the game\'s local save location.<br>5. Use <strong>Ludusavi</strong> (free save backup tool) to prevent this in future.' },
+      { text: 'Achievements disappeared after game update', end: true, answer: '1. Game updates can reset achievement tracking. Check that the <strong>usergamestats</strong> and <strong>usergamestatschema</strong> files still exist in the userdata folder.<br>2. Run <strong>CloudRedirect</strong> before launching — it can help Steam recognize the data.<br>3. Achievement tracking depends on the Steam client — make sure Steam itself is working properly.<br>4. If files are gone, they may be irrecoverable without a backup.' },
+      { text: 'I have save files but the game won\'t recognize them', end: true, answer: '1. Make sure saves are in the <strong>correct folder</strong> — each game is different (check PCGamingWiki).<br>2. Copy them to both the Steam userdata folder AND the game\'s Documents/AppData folder.<br>3. Some games tie saves to your Steam ID — cracked versions may use a different ID, making old saves incompatible. Try matching the Steam ID in the cracked save path.' },
     ],
   },
 };
 
+/* ── Farmer & KFC story ────────────────────────────── */
+const kfcStory = [
+  'So you went to KFC...',
+  'You walked in, hungry after a long day.',
+  'The smell of fried chicken filled the air.',
+  'You approached the counter...',
+  'And asked for a bucket of chicken.',
+  'The cashier, a tired-looking teenager, stared at you.',
+  '"Sir," they said, "this is a Wendy\'s."',
+  'You blinked. <em>What?</em>',
+  'You looked around. Red hair logo. Square burgers.',
+  'You were not at KFC.',
+  'You had never been to KFC.',
+  'You are a farmer.',
+  'You grow corn.',
+  'You don\'t even <em>like</em> chicken.',
+  'You slowly backed away from the counter.',
+  'Walked out into the parking lot.',
+  'Got in your tractor.',
+  'And drove home.',
+  'The end.',
+];
+
+function showRickroll(resultArea) {
+  resultArea.innerHTML = `
+    <div class="rickroll-wrap">
+      <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&mute=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    </div>
+    <button class="btn btn-restart" onclick="restart()">Ask Another Question</button>
+  `;
+}
+
+function showStory(resultArea) {
+  let linesHtml = kfcStory.map((line, i) =>
+    `<div class="story-line" style="animation-delay:${0.6 + i * 0.5}s;opacity:0;animation:storyFadeIn 0.4s ${0.6 + i * 0.5}s forwards">${line}</div>`
+  ).join('');
+
+  resultArea.innerHTML = `
+    <div class="story-container">
+      <div class="story-title">The Farmer and the KFC</div>
+      <div class="story-text">${linesHtml}</div>
+      <div class="story-btn-wrap" style="animation:storyFadeIn 0.4s ${0.6 + kfcStory.length * 0.5}s forwards; opacity:0; margin-top:20px">
+        <button class="btn btn-restart" onclick="restart()">Ask Another Question</button>
+      </div>
+    </div>
+  `;
+}
+
+/* ── Router / render logic ─────────────────────────── */
 let history = [];
 let currentNode = 'start';
 let pendingAnswer = null;
+let pendingSpecial = null; // 'rickroll' | 'story' | null
 
 function render() {
   const node = faq[currentNode];
   const stepLabel = document.getElementById('stepLabel');
   const questionArea = document.getElementById('questionArea');
   const resultArea = document.getElementById('resultArea');
+
+  if (pendingSpecial === 'rickroll') {
+    stepLabel.textContent = 'You really clicked that, huh?';
+    questionArea.classList.add('hidden');
+    resultArea.classList.remove('hidden');
+    showRickroll(resultArea);
+    pendingSpecial = null;
+    return;
+  }
+
+  if (pendingSpecial === 'story') {
+    stepLabel.textContent = 'A tale as old as time...';
+    questionArea.classList.add('hidden');
+    resultArea.classList.remove('hidden');
+    showStory(resultArea);
+    pendingSpecial = null;
+    return;
+  }
 
   if (pendingAnswer) {
     showResult(pendingAnswer);
@@ -289,7 +393,7 @@ function render() {
   let html = `<div class="question-label">${node.label}</div>`;
   html += '<div class="options">';
   node.options.forEach((opt) => {
-    html += `<button class="option-btn" onclick="choose('${opt.next || ''}','${encodeURIComponent(opt.answer || '')}',${!!opt.end})">${opt.text}</button>`;
+    html += `<button class="option-btn" onclick="choose('${opt.next || ''}','${encodeURIComponent(opt.answer || '')}',${!!opt.end},'${opt.rickroll ? 'rickroll' : ''}','${opt.story ? 'story' : ''}')">${opt.text}</button>`;
   });
   html += '</div>';
 
@@ -300,11 +404,15 @@ function render() {
   questionArea.innerHTML = html;
 }
 
-function choose(nextId, answerEnc, isEnd) {
+function choose(nextId, answerEnc, isEnd, rickrollFlag, storyFlag) {
   if (history.length === 0 || history[history.length - 1] !== currentNode) {
     history.push(currentNode);
   }
-  if (isEnd) {
+  if (rickrollFlag) {
+    pendingSpecial = 'rickroll';
+  } else if (storyFlag) {
+    pendingSpecial = 'story';
+  } else if (isEnd) {
     pendingAnswer = decodeURIComponent(answerEnc);
   } else if (faq[nextId]) {
     currentNode = nextId;
@@ -316,6 +424,7 @@ function goBack() {
   if (history.length === 0) return;
   currentNode = history.pop();
   pendingAnswer = null;
+  pendingSpecial = null;
   render();
 }
 
@@ -332,6 +441,7 @@ function jumpTo(nodeId, idx) {
   history.splice(idx);
   currentNode = nodeId;
   pendingAnswer = null;
+  pendingSpecial = null;
   render();
 }
 
@@ -349,6 +459,7 @@ function restart() {
   history.length = 0;
   currentNode = 'start';
   pendingAnswer = null;
+  pendingSpecial = null;
   render();
 }
 
