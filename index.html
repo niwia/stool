@@ -386,13 +386,32 @@ const kfcStory = [
   'The end.',
 ];
 
+let preloadedRickroll = null;
+
+function preloadRickroll() {
+  const div = document.createElement('div');
+  div.className = 'rickroll-wrap hidden';
+  div.id = 'preloadRickroll';
+  div.innerHTML = '<iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&mute=1&controls=0" allow="autoplay" allowfullscreen></iframe>';
+  document.getElementById('app').appendChild(div);
+  preloadedRickroll = div;
+}
+
 function showRickroll(resultArea) {
-  resultArea.innerHTML = `
-    <div class="rickroll-wrap">
-      <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&mute=1&controls=0" allow="autoplay" allowfullscreen></iframe>
-    </div>
-    <button class="btn btn-restart" onclick="restart()">Ask Another Question</button>
-  `;
+  const pr = preloadedRickroll || document.getElementById('preloadRickroll');
+  if (pr && pr.parentNode) {
+    resultArea.innerHTML = '';
+    resultArea.appendChild(pr);
+    pr.classList.remove('hidden');
+    const iframe = pr.querySelector('iframe');
+    iframe.src = iframe.src; // force reload to retrigger autoplay
+  } else {
+    resultArea.innerHTML = `
+      <div class="rickroll-wrap">
+        <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&mute=1&controls=0" allow="autoplay" allowfullscreen></iframe>
+      </div>`;
+  }
+  resultArea.innerHTML += `<button class="btn btn-restart" onclick="restart()">Ask Another Question</button>`;
 }
 
 function showStory(resultArea) {
@@ -505,6 +524,11 @@ function jumpTo(nodeId, idx) {
 }
 
 function restart() {
+  const pr = document.getElementById('preloadRickroll');
+  if (pr && pr.parentNode) {
+    pr.classList.add('hidden');
+    document.getElementById('app').appendChild(pr);
+  }
   history.length = 0;
   currentNode = 'start';
   pendingAnswerKey = null;
@@ -512,6 +536,7 @@ function restart() {
   render();
 }
 
+preloadRickroll();
 render();
 </script>
 </body>
